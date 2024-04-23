@@ -1,0 +1,98 @@
+[
+    {
+        "conversation": [
+            {
+                "input": "The endpoints of a diameter of circle $M$ are $(-1,-4)$ and $(-7,6)$. What are the coordinates of the center of circle $M$? Express your answer as an ordered pair.",
+                "output": "The midpoint of a diameter of a circle is its center. Thus, $M$ is the midpoint of the segment from $(-1,-4)$ to $(-7,6),$ so $M$ has coordinates \\[\\left(\\frac{-1+(-7)}{2},\\frac{-4+6}{2} \\right)=\\boxed{(-4,1)}.\\]"
+            }
+        ]
+    },
+    {
+        "conversation": [
+            {
+                "input": "In triangle $ABC$,\n\\[2a^2 + 4b^2 + c^2 = 4ab + 2ac.\\]Compute the numerical value of $\\cos B.$",
+                "output": "Moving everything to one side, we get\n\\[2a^2 + 4b^2 + c^2 - 4ab - 2ac = 0.\\]We can write this equation as\n\\[(a - 2b)^2 + (a - c)^2 = 0,\\]so $b = \\frac{a}{2}$ and $a = c.$  Then by the Law of Cosines,\n\\[\\cos B = \\frac{a^2 + c^2 - b^2}{2ac} = \\frac{a^2 + a^2 - \\frac{a^2}{4}}{2a^2} = \\boxed{\\frac{7}{8}}.\\]"
+            }
+        ]
+    },
+    {
+        "conversation": [
+            {
+                "input": "Find the smallest positive integer $N$ with the following property: of the three numbers $N$, $N+1$, and $N+2$, one of them is divisible by $2^2$, one of them is divisible by $3^2$, one is divisible by $5^2$, and one is divisible by $7^2$.",
+                "output": "The most efficient means of searching for this trio of integers is to begin with the multiples of $7^2$.  The first such number is 49, which almost works, since 50 is divisible by $5^2$ and 48 is divisible by $2^2$.  But none of the nearby numbers is divisible by $3^2$, so we move on to the next multiple of $7^2$, which is 98.  To our delight we discover that $3^2$ divides 99, while $2^2$ and $5^2$ divide 100.  Hence we should take $N=\\boxed{98}$."
+            }
+        ]
+    },
+    {
+        "conversation": [
+            {
+                "input": "Using the letters $A$ and $B$, the following two-letter code words can be formed: $AA$, $AB$, $BB$, $BA$. Using the letters $A$, $B$, and $C$, how many different three-letter code words can be formed?",
+                "output": "Make a tree-diagram for all three-letter code words starting with $A$. Each path from the top to the bottom contains 3 letters, which is one of the code words beginning with $A$. There are 9 such code words. Clearly, there are 9 code words starting with $B$ and 9 starting with $C$. In all, there are $\\boxed{27}$ code words.\n\n[asy]\n\ndraw((-10,-8)--(0,0)--(10,-8));\nlabel(\"$A$\",(0,0),N);\n\ndraw((-12,-18)--(-10,-12)--(-10,-18));\ndraw((-10,-12)--(-8,-18));\n\nlabel(\"$A$\",(-10,-10));\nlabel(\"$A$\",(-12,-18),S);\nlabel(\"$B$\",(-10,-18),S);\nlabel(\"$C$\",(-8,-18),S);\n\ndraw((0,0)--(0,-8));\n\ndraw((-2,-18)--(0,-12)--(0,-18));\ndraw((0,-12)--(2,-18));\n\nlabel(\"$B$\",(0,-10));\nlabel(\"$A$\",(-2,-18),S);\nlabel(\"$B$\",(0,-18),S);\nlabel(\"$C$\",(2,-18),S);\n\ndraw((8,-18)--(10,-12)--(10,-18));\ndraw((10,-12)--(12,-18));\n\nlabel(\"$C$\",(10,-10));\nlabel(\"$A$\",(8,-18),S);\nlabel(\"$B$\",(10,-18),S);\nlabel(\"$C$\",(12,-18),S);\n\n[/asy]"
+            }
+        ]
+    },
+    {
+        "conversation": [
+            {
+                "input": "Steve has an isosceles triangle with base 8 inches and height 10 inches. He wants to cut it into eight pieces that have equal areas, as shown below. To the nearest hundredth of an inch what is the number of inches in the greatest perimeter among the eight pieces? [asy]\nsize(150);\ndefaultpen(linewidth(0.7));\ndraw((0,0)--(8,0));\nfor(int i = 0; i < 9; ++i){\ndraw((4,10)--(i,0));\n}\ndraw((0,-0.5)--(8,-0.5),Bars(5));\nlabel(\"$8''$\",(0,-0.5)--(8,-0.5),S);\n[/asy]",
+                "output": "To make the $8$ triangles have the same area, the base must be divided into $8$ segments of length $1$ inch each.  Define points $A$, $B_0$, $B_1$, $B_2$, $B_3$, and $B_4$ as in the figure.  For $0\\leq k\\leq 3$, the perimeter $P(k)$ of triangle $A B_k B_{k+1}$ in inches is \\[\nP(k)=1+\\sqrt{10^2+k^2}+\\sqrt{10^2+(k+1)^2},\n\\]where each distance $A B_k$ is calculated by applying the Pythagorean theorem to right triangle $A B_0 B_k$.  Since $P(k)$ increases as $k$ increases, its largest value is $P(3)=1+\\sqrt{100+3^2}+\\sqrt{100+4^2}$, which to the nearest hundredth is $\\boxed{22.21}$ inches.  [asy]\nsize(200);\ndefaultpen(linewidth(0.7)+fontsize(10));\ndraw((0,0)--(8,0));\nfor(int i = 0; i < 9; ++i){\ndraw((4,10)--(i,0));\nif(i>=4)\n\nlabel(\"$B_\"+string(i-4)+\"$\",(i,0),S);\n}\nlabel(\"$A$\",(4,10),N);\n[/asy]"
+            }
+        ]
+    },
+    {
+        "conversation": [
+            {
+                "input": "\\lim {x \\rightarrow+\\infty} \\frac{x^{3}+x^{2}+1}{\\mathrm{e}^{x}+x^{3}}(\\sin x+\\cos x)=",
+                "output": "0 \\\\ 解: 由于\\\\\\lim _{x \\rightarrow+\\infty} \\frac{x^{3}+x^{2}+1}{\\mathrm{e}^{x}+x^{3}}=\\lim _{x \\rightarrow+\\infty} \\frac{3 x^{2}+2 x}{\\mathrm{e}^{x}+3 x^{2}}=\\lim _{x \\rightarrow+\\infty} \\frac{6 x+2}{\\mathrm{e}^{x}+6 x}=\\lim _{x \\rightarrow+\\infty} \\frac{6}{\\mathrm{e}^{x}+6}=0,\\\\\\且 |\\sin x+\\cos x| \\leqslant 2, 即有界, 故原式 =0.\\【注】当 x \\rightarrow+\\infty 时, \\mathrm{e}^{x} 是比 x^{3} 高阶的无穷大, 则 \\lim _{x \\rightarrow+\\infty} \\frac{x^{3}+x^{2}+1}{\\mathrm{e}^{x}+x^{3}}=0."
+            }
+        ]
+    },
+    {
+        "conversation": [
+            {
+                "input": "In how many ways can a President and a Vice-President be chosen from a group of 5 people (assuming that the President and the Vice-President cannot be the same person)?",
+                "output": "There are 5 choices for President, and then 4 choices (the remaining four people) for Vice-President, so there are $5 \\times 4 = \\boxed{20}$ choices for the two officers."
+            }
+        ]
+    },
+    {
+        "conversation": [
+            {
+                "input": "Let $a_1,$ $a_2,$ $\\dots$ be a sequence of real numbers such that for all positive integers $n,$\n\\[\\sum_{k = 1}^n a_k \\left( \\frac{k}{n} \\right)^2 = 1.\\]Find the smallest $n$ such that $a_n < \\frac{1}{2018}.$",
+                "output": "For $n = 1,$ we get $a_1 = 1.$  Otherwise,\n\\[\\sum_{k = 1}^n k^2 a_k = n^2.\\]Also,\n\\[\\sum_{k = 1}^{n - 1} k^2 a_k = (n - 1)^2.\\]Subtracting these equations, we get\n\\[n^2 a_n = n^2 - (n - 1)^2 = 2n - 1,\\]so $a_n = \\frac{2n - 1}{n^2} = \\frac{2}{n} - \\frac{1}{n^2}.$  Note that $a_n = 1 - \\frac{n^2 - 2n + 1}{n^2} = 1 - \\left( \\frac{n - 1}{n} \\right)^2$ is a decreasing function of $n.$\n\nAlso,\n\\[a_{4035} - \\frac{1}{2018} = \\frac{2}{4035} - \\frac{1}{4035^2} - \\frac{1}{2018} = \\frac{1}{4035 \\cdot 2018} - \\frac{1}{4035^2} > 0,\\]and\n\\[a_{4036} < \\frac{2}{4036} = \\frac{1}{2018}.\\]Thus, the smallest such $n$ is $\\boxed{4036}.$"
+            }
+        ]
+    },
+    {
+        "conversation": [
+            {
+                "input": "A right, rectangular prism has three faces with areas of $6,8$ and $12$ square inches. What is the volume of the prism, in cubic inches?",
+                "output": "If $l$, $w$, and $h$ represent the dimensions of the rectangular prism, we look for the volume $lwh$. We arbitrarily set $lw=6$, $wh=8$, and $lh=12$. Now notice that if we multiply all three equations, we get $l^2w^2h^2=6\\cdot8\\cdot12=3\\cdot2\\cdot2^3\\cdot2^2\\cdot3=2^6\\cdot3^2$. To get the volume, we take the square root of each side and get $lwh=2^3\\cdot3=\\boxed{24}$ cubic inches."
+            }
+        ]
+    },
+    {
+        "conversation": [
+            {
+                "input": "Given that the diagonals of a rhombus are always perpendicular bisectors of each other, what is the area of a rhombus with side length $\\sqrt{89}$ units and diagonals that differ by 6 units?",
+                "output": "Because the diagonals of a rhombus are perpendicular bisectors of each other, they divide the rhombus into four congruent right triangles.  Let $x$ be half of the length of the shorter diagonal of the rhombus.  Then $x+3$ is half of the length of the longer diagonal.  Also, $x$ and $x+3$ are the lengths of the legs of each of the right triangles.  By the Pythagorean theorem,  \\[\nx^2+(x+3)^2=\\left(\\sqrt{89}\\right)^2.\n\\] Expanding $(x+3)^2$ as $x^2+6x+9$ and moving every term to the left-hand side, the equation simplifies to $2x^2+6x-80=0$.  The expression $2x^2+6x-80$ factors as $2(x-5)(x+8)$, so we find $x=5$ and $x=-8$.  Discarding the negative solution, we calculate the area of the rhombus by multiplying the area of one of the right triangles by 4. The area of the rhombus is $4\\cdot\\left(\\frac{1}{2}\\cdot 5(5+3)\\right)=\\boxed{80}$ square units.\n\n[asy]\nunitsize(3mm);\ndefaultpen(linewidth(0.7pt)+fontsize(11pt));\ndotfactor=3;\npair A=(8,0), B=(0,5), C=(-8,0), D=(0,-5), Ep = (0,0);\ndraw(A--B--C--D--cycle);\ndraw(A--C);\ndraw(B--D);\nlabel(\"$x$\",midpoint(Ep--B),W);\nlabel(\"$x+3$\",midpoint(Ep--A),S);\nlabel(\"$\\sqrt{89}$\",midpoint(A--B),NE);[/asy]"
+            }
+        ]
+    },
+    {
+        "conversation": [
+            {
+                "input": "A large sphere has a volume of $288\\pi$ cubic units.  A smaller sphere has a volume which is $12.5\\%$ of the volume of the larger sphere.  What is the ratio of the radius of the smaller sphere to the radius of the larger sphere? Express your answer as a common fraction.",
+                "output": "We know that the two spheres are similar (in the same sense that triangles are similar) because corresponding parts are in proportion. We will prove that for two spheres that are similar in the ratio $1:k$, their volumes have the ratio $1:k^3$. Let the radius of the first sphere be $r$, so the radius of the other sphere is $kr$. The volume of the first sphere is $\\frac{4}{3}\\pi r^3$ and the volume of the second sphere is $\\frac{4}{3}\\pi (kr)^3$. The ratio between the two volumes is  \\[\\frac{\\frac{4}{3}\\pi r^3}{\\frac{4}{3}\\pi (kr)^3}=\\frac{r^3}{k^3r^3}=\\frac{1}{k^3}\\] Thus, the ratio of the volumes of the two spheres is $1:k^3$.\n\nIn this problem, since the smaller sphere has $12.5\\%=\\frac{1}{8}$ of the volume of the larger sphere, the radius is $\\sqrt[3]{\\frac{1}{8}}=\\frac{1}{2}$ that of the larger sphere. Thus, the ratio between the two radii is $\\boxed{\\frac{1}{2}}$.\n\n(In general, the ratio of the volumes of two similar 3-D shapes is the cube of the ratio of the lengths of corresponding sides.)"
+            }
+        ]
+    },
+    {
+        "conversation": [
+            {
+                "input": "A drawer contains 3 white balls and 6 black balls.  Two balls are drawn out of the box at random.  What is the probability that they both are white?",
+                "output": "There are $\\binom{9}{2} = 36$ combinations of two balls that can be drawn.  There are $\\binom{3}{2} = 3$ combinations of two white balls that can be drawn.  So the probability that two balls pulled out are both white is $\\dfrac{3}{36} = \\boxed{\\dfrac{1}{12}}$."
+            }
+        ]
+    }
+]
