@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SATO: Stable Text-to-Motion Framework</title>
+</head>
+
+<body>
+  <h1>SATO: Stable Text-to-Motion Framework</h1>
+  <h2>ABSTRACT</h2>
+  <p>Is the Text to Motion model robust? Recent advancements in Text
+    to Motion models primarily stem from more accurate predictions of
+    specific actions. However, the text modality typically relies solely on
+    pre-trained Contrastive Language-Image Pretraining (CLIP) models.
+    Our research has uncovered a significant issue with the text-tomotion model: its predictions often exhibit
+    inconsistent outputs,
+    resulting in vastly different or even incorrect poses when presented
+    with semantically similar or identical text inputs. In this paper, we
+    undertake an analysis to elucidate the underlying causes of this
+    instability, establishing a clear link between the unpredictability
+    of model outputs and the erratic attention patterns of the text encoder module. Consequently, we introduce a formal
+    framework
+    aimed at addressing this issue, which we term the Stable Textto-Motion Framework (SATO). SATO consists of three
+    modules,
+    each dedicated to stable attention, stable prediction, and maintaining a balance between accuracy and robustness
+    trade-off. We
+    present a methodology for constructing an SATO that satisfies
+    the stability of attention and prediction. To verify the stability of
+    the model, we introduced a new textual synonym perturbation
+    dataset based on HumanML3D and KIT-ML. Results show that
+    SATO is significantly more stable against synonyms and other
+    slight perturbations while keeping its high accuracy performance.
+    We have presented more intuitive visualizations on the anonymous website:
+    https://anonymous.4open.science/api/repo/project-
+    1FC7/file/SATO.html</p>
+</body>
+
+</html>
