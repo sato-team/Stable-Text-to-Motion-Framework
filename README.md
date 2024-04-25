@@ -1,7 +1,6 @@
 # SATO: Stable Text-to-Motion Framework
 
-[Wenshuo chen](https://ps.is.mpg.de/person/sdwivedi), [Cordelia Schmid](https://thoth.inrialpes.fr/~schmid/), [Hongwei Yi](https://ps.is.mpg.de/person/hyi), [Michael J. Black](https://ps.is.mpg.de/person/black), [Dimitrios Tzionas](https://dtzionas.com)
-
+[Wenshuo chen](https://github.com/shurdy123)
 <!-- **International Conference on 3D Vision (3DV 2024)** -->
 
 [![Website shields.io](https://img.shields.io/website?url=http%3A//poco.is.tue.mpg.de)]() [![YouTube Badge](https://img.shields.io/badge/YouTube-Watch-red?style=flat-square&logo=youtube)]()  [![arXiv](https://img.shields.io/badge/arXiv-2308.12965-00ff00.svg)]()  
