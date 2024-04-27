@@ -1,4 +1,4 @@
-name: T2M-GPT
+name: SATO
 channels:
   - pytorch
   - defaults
