@@ -77,7 +77,7 @@ We appreciate helps from :
 
 - Open Source Code：[T2M-GPT](https://github.com/Mael-zys/T2M-GPT), [MoMask ](https://github.com/EricGuo5513/momask-codes)etc.
 - [Hongru Xiao](https://github.com/Hongru0306), [Lijie Hu](https://sites.google.com/view/lijiehu/homepage), [Lei Wang](), [Mengyuan Liu](https://leiwangr.github.io/), and [Chen Chen](https://www.crcv.ucf.edu/chenchen/) for discussions and guidance throughout the project, which has been instrumental to our work.
-- Zhen Zhao for project website.
+- [Zhen Zhao](https://github.com/Zanebla) for project website.
 
 ## Citing<a name="citing"></a>
 
