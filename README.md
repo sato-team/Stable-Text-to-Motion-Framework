@@ -23,7 +23,7 @@
 
 * [5. Evaluation](#eval)
 
-* [6. Acknowledgements](#acknowledgements)
+* [6. Acknowledgments](#acknowledgements)
 
   
 
