@@ -59,20 +59,20 @@ def batch_tvd(predictions, targets): #accepts two Torch tensors... " "
 
 
 def batch_jaccard_similarity(gt, pred):
-    intersection = torch.min(gt, pred).sum(dim=1)  # 计算每个样本的交集
-    union = torch.max(gt, pred).sum(dim=1)  # 计算每个样本的并集
-    similarity = intersection / union  # 计算每个样本的Jaccard相似性
+    intersection = torch.min(gt, pred).sum(dim=1)  
+    union = torch.max(gt, pred).sum(dim=1)  
+    similarity = intersection / union 
     return similarity
 
 def jaccard_similarity(gt, pred, top_k=2):
-    # 选择前top_k个最高的注意力
+    
     gt_top_k = torch.topk(gt, top_k, dim=1).values
     pred_top_k = torch.topk(pred, top_k, dim=1).values
     
-    # 计算Jaccard相似性
+    
     jaccard_sim = batch_jaccard_similarity(gt_top_k, pred_top_k)
     
-    # 计算均值
+    
     mean_similarity = jaccard_sim.mean()
     
     return mean_similarity
