@@ -66,7 +66,7 @@ We will release the training code soon.
 
 ### **Evaluation**<a name="eval"></a>
 
-You can download the pretrained models in this [link](). 
+You can download the pretrained models in this [link](https://drive.google.com/drive/folders/1RhK2gcQfILwKalRYnEqU58jRNsdqPAfq?usp=drive_link). 
 
 ```shell
 python eval_t2m.py --resume-pth pretrained/net_best_fid.pth --clip_path pretrained/clip_net_best_fid.pth
