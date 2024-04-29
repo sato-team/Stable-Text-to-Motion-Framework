@@ -43,8 +43,8 @@ eval_wrapper = EvaluatorModelWrapper(wrapper_opt)
 ##### ---- Network ---- #####
 
 ## load clip model and datasets
-clip_path = '/root/autodl-tmp/SATO/output_SATO/adv_2/debug/clip_best.pth'  # ViT-B/32
-clip_model, clip_preprocess = clip.load(clip_path, device=torch.device('cuda'), jit=False)  # Must set jit=False for training
+
+clip_model, clip_preprocess = clip.load(args.clip_path, device=torch.device('cuda'), jit=False)  # Must set jit=False for training
 clip.model.convert_weights(clip_model)  # Actually this line is unnecessary since clip by default already on float16
 clip_model.eval()
 for p in clip_model.parameters():
