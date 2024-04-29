@@ -47,6 +47,7 @@ The code was tested on Python 3.8 and PyTorch 1.8.1.
 ## Dependencies<a name="Dependencies"></a>
 
 ```shell
+bash dataset/prepare/download_extractor.sh
 bash dataset/prepare/download_glove.sh
 ```
 
