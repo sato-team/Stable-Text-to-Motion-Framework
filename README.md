@@ -47,8 +47,10 @@ A fundamental challenge inherent in text-to-motion tasks stems from the variabil
   </tr>
 </table>
 </p>
-## Motivation
 
+## Motivation
+![motivation](images/motivation.png)
+The model's inconsistent outputs are accompanied by unstable attention patterns.We further elucidate the aforementioned experimental findings: When perturbed text is inputted, the model exhibits unstable attention, often neglecting critical text elements necessary for accurate motion prediction. This instability further complicates the encoding of text into consistent embeddings, leading to a cascade of consecutive temporal motion generation errors.
 
 ## Table of Content
 
