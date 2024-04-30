@@ -35,7 +35,7 @@
     <th align="center"><u><a href="https://github.com/Mael-zys/T2M-GPT"><nobr>T2M-GPT</nobr> </a></u></th>
     <th align="center"><u><a href="https://guytevet.github.io/mdm-page/"><nobr>MDM</nobr> </a></u></th>
     <th align="center"><u><a href="https://github.com/EricGuo5513/momask-codes"><nobr>MoMask</nobr> </a></u></th>
-    <th align="center"><nobr>SATO</nobr> </th>
+    <th align="center"><u><a href="https://github.com/sato-team/Stable-Text-to-motion-Framework"><nobr>SATO</nobr> </a></u></th>
   </tr>
 
   <tr>
