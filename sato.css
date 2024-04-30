@@ -17,6 +17,8 @@ p {
 @media only screen and (max-width: 768px) {
   p {
     margin: 0 10px; /* 在小屏幕下调整段落左右边距为10px */
+    /* text-align: left; */
+    font-size: 14px;
   }
 }
 
