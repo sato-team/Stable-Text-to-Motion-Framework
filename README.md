@@ -47,10 +47,10 @@
 </table>
 </p>
 <center>
-  <h3>
+  <h2>
     <p style="color: blue;">
       Explanation: T2M-GPT lacks the action of moving forward, while MoMask's forward movement is uneven.</p>
-  </h3>
+  </h2>
 </center>
 
 ## Table of Content
