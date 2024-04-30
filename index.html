@@ -8,41 +8,54 @@
   <link rel="stylesheet" type="text/css" href="sato.css">
 </head>
 
+<!-- [Wenshuo chen](https://github.com/shurdy123), [Hongru Xiao](https://github.com/Hongru0306), [Lijie Hu](https://sites.google.com/view/lijiehu/homepage), [Lei Wang](), [Mengyuan Liu](https://leiwangr.github.io/), [Chen Chen](https://www.crcv.ucf.edu/chenchen/) -->
+
 <body>
   <div class="header">
     <h1>SATO: Stable Text-to-Motion Framework</h1>
     <div class="author">
-      <a href="">Wenshuo Chen*</a>
-      <a href="">Hongru Xiao*</a>
-      <a href="">Erhang Zhang*</a>
-      <a href="">Lijie Hu</a>
-      <a href="">Lei Wang</a>
-      <a href="">Mengyuan Liu</a>
-      <a href="">Chen Chen</a>
+      <a href="https://github.com/shurdy123">Wenshuo Chen*</a>
+      <a href="https://github.com/Hongru0306">Hongru Xiao*</a>
+      <a href="https://github.com/zhangerhang">Erhang Zhang*</a>
+      <a href="https://sites.google.com/view/lijiehu/homepage">Lijie Hu</a>
+      <a href="https://leiwangr.github.io/ ">Lei Wang</a>
+      <a href="https://www.semanticscholar.org/author/Mengyuan-Liu/47842072">Mengyuan Liu</a>
+      <a href="https://www.crcv.ucf.edu/chenchen/">Chen Chen</a>
     </div>
     <div class="linkButton">
-      <button>arXiv</button>
-      <button>Paper</button>
-      <button>Code</button>
+      <button onclick="window.location.href=''"><img src="./assets/Arxiv.png" alt="" width="16px"
+          style="margin-bottom: -3px;"> arXiv</button>
+      <button onclick="window.location.href=''"><img src=" ./assets/paper.png" alt="" width="16px"
+          style="margin-bottom: -3px;"> Paper</button>
+      <button onclick="window.open('https://github.com/sato-team/Stable-Text-to-motion-Framework')"><img
+          src="./assets/github.png" alt="" width="16px" style="margin-bottom: -3px;"> Code</button>
     </div>
     <div class="anchor">
-      <a href="">Video</a>
-      <a href="">Abstract</a>
-      <a href="">Existing Challenges</a>
-      <a href="">Network</a>
-      <a href="">Comparsions to Prior Work</a>
+      <a href="#video"">Video</a>
+      <a href=" #abstract">Abstract</a>
+      <a href="#exist">Existing Challenges</a>
+      <a href="#motivation">Motivation</a>
+      <a href="#approach">Our Approach</a>
+      <a href="#compare">Comparsions to Prior Work</a>
     </div>
   </div>
 
+  <a name=" video"></a>
   <div class="video">
-    <iframe width="560" height="315" src="https://www.youtube.com/embed/VIDEO_ID" frameborder="0"
-      allowfullscreen></iframe>
-    <p style="text-align: center;">We recommend watching the video with sound on</p>
+    <!-- <iframe width="560" height="315" src="https://www.youtube.com/embed/VIDEO_ID" frameborder="0"
+      allowfullscreen></iframe> -->
+    <video width="900" height="600" controls>
+      <source src="./video/sato.mp4" type="video/mp4">
+      Your browser does not support the video tag.
+    </video>
+    <!-- <p style="text-align: center;">We recommend watching the video with sound on</p> -->
   </div>
 
+  <a name="abstract"></a>
   <div class="abstract">
     <h2>ABSTRACT</h2>
-    <p>Is the Text to Motion model robust? Recent advancements in Text to Motion models primarily stem from more accurate predictions of
+    <p>Is the Text to Motion model robust? Recent advancements in Text to Motion models primarily stem from more
+      accurate predictions of
       specific actions. However, the text modality typically relies solely on
       pre-trained Contrastive Language-Image Pretraining (CLIP) models.
       Our research has uncovered a significant issue with the text-to motion model: its predictions often exhibit
@@ -53,59 +66,112 @@
       of model outputs and the erratic attention patterns of the text encoder module. Consequently, we introduce a
       formal
       framework
-      aimed at addressing this issue, which we term the Stable Text to-Motion Framework (SATO). SATO consists of three
+      aimed at addressing this issue, which we term the Stable Text to-Motion Framework (SATO). SATO consists of
+      three
       modules,
-      each dedicated to stable attention, stable prediction, and maintaining a balance between accuracy and robustness
+      each dedicated to stable attention, stable prediction, and maintaining a balance between accuracy and
+      robustness
       trade-off. We present a methodology for constructing an SATO that satisfies
       the stability of attention and prediction. To verify the stability of
       the model, we introduced a new textual synonym perturbation
       dataset based on HumanML3D and KIT-ML. Results show that
       SATO is significantly more stable against synonyms and other
       slight perturbations while keeping its high accuracy performance.
-      We have presented more intuitive visualizations on the anony mous website:
-      https://anonymous.4open.science/api/repo/project-
-      1FC7/file/SATO.html</p>
+    </p>
   </div>
 
+  <a name="exist"></a>
   <div class="existingChallenges">
     <h2>Existing Challenges</h2>
-    <div class="challenge">
-      <img src="./assets/challenge_left.png" alt="">
-      <img src="./assets/challenge_right.jpg" alt="" style="width: 800px;">
+    <div style="text-align: center; font-weight: bold;"><span>Text-to-Motion task challenge:
+      </span>
+      <span style="color: rgb(8, 221, 65);">Variability of textual inputs</span>
+      <div class="challenge"></div>
+      <!-- <img src="./assets/challenge_left.png" alt=""> -->
+      <!-- <img src="./assets/challenge_right.jpg" alt="" style="width: 800px;"> -->
+      <img src="./assets/challenge.png" alt="" style="width: 800px;">
+      <video src="./video/video1.mp4" controls autoplay></video>
+      <img src="./assets/arrow.png" alt="" style="width: 65px; height: 340px;">
+      <video src="./video/video2.mp4" controls autoplay></video>
     </div>
-    <p>A fundamental challenge inherent in text-to-motion tasks stems from the variability of textual inputs . Even when
-      conveying similar or the same meanings and intentions, texts can exhibit considerable variations in vocabulary and
-      structure due to individual user preferences or linguistic nuances. Despite the considerable advancements made in
+    <p>A fundamental challenge inherent in text-to-motion tasks stems from the variability of textual inputs . Even
+      when
+      conveying similar or the same meanings and intentions, texts can exhibit considerable variations in vocabulary
+      and
+      structure due to individual user preferences or linguistic nuances. Despite the considerable advancements made
+      in
       these models, we find a notable weakness: all of them demonstrate instability in prediction when encountering
       minor textual perturbations, such as synonym substitutions. We establish a clear link between the
-      unpredictability of model outputs and the erratic attention patterns of the text encoder module. The stability of
+      unpredictability of model outputs and the erratic attention patterns of the text encoder module. The stability
+      of
       the model manifests in the consistency of textual attentionand its ability to handle perturbations in text
       features, highlighting its pivotal role in mitigating such errors.</p>
   </div>
 
-  <div class="network">
-    <h2>Network</h2>
-    <img src="./assets/network.jpg" alt="" style="display: block; width: 800px; margin: 0 auto ;">
-    <p>Attention Stability. For the original text input, we can easily observe the model's attention vector for the
-      text. This attention vector reflects the model's attentional ranking of the text, indicating the importance of
-      each word to the text encoder's prediction. We hope a stable attention vector maintains a consistent ranking even
-      after perturbations.</p>
-    <p>Prediction Robustness. Even with stable attention, we still cannot achieve stable results due to the change in
-      text embeddings when facing perturbations, even with similar attention vectors. This requires us to impose further
-      restrictions on the model's predictions. Specifically, in the face of perturbations, the model's prediction should
-      remain consistent with the original distribution, meaning the model's output should be robust to perturbations.
+  <a name="motivation"></a>
+  <div class="motivation">
+    <h2>Motivation</h2>
+    <div style="display: flex; align-items: center; justify-items: center; margin: 0 auto;">
+      <div style="display: flex; align-items: center; justify-items: center; margin: 0 auto;">
+        <div style="display: inline;">
+          <img src="./assets/attention1.png" alt="" width="550px"">
+          <p style=" font-weight: 100; font-size: 16px; text-align: center;">JSD measures the difference between
+          vectors
+          </p>
+        </div>
+        <img src="./assets/motivation_right.jpg" alt="" width="550px" style="margin-left: 40px;">
+      </div>
+    </div>
+    <p style="margin-top: 10px;">The model's inconsistent outputs are accompanied by unstable
+      attention
+      patterns.We further elucidate the aforementioned experimental findings: When perturbed text is inputted, the model
+      exhibits unstable attention, often neglecting critical text elements necessary for accurate motion prediction.
+      This instability further complicates the encoding of text into consistent embeddings, leading to a cascade of
+      consecutive temporal motion generation errors.
     </p>
-    <p>Balancing Accuracy and Robustness. Accuracy and robustness are naturally in a trade-off relationship [21, 30].
-      Our objective is to bolster stability while minimizing the decline in model accuracy, thereby mitigating
-      catastrophic errors arising from input perturbations. Consequently, we require a mechanism to uphold the model's
-      performance concerning the original input.</p>
   </div>
 
+  <a name="approach"></a>
+  <div class="approach">
+    <h2>Our Approach</h2>
+    <img src="./assets/network.jpg" alt="" style="display: block; width: 800px; margin: 0 auto ;">
+    <div style="display: flex; gap: 10px; margin-top: 10px;">
+      <p style="margin-right: -30px;"><span style="font-weight: bold;">Attention Stability. </span>For the original text
+        input, we can easily observe the
+        model's attention vector for the
+        text. This attention vector reflects the model's attentional ranking of the text, indicating the importance of
+        each word to the text encoder's prediction. We hope a stable attention vector maintains a consistent ranking
+        even
+        after perturbations.</p>
+      <p style="margin-right: -30px;"><span style="font-weight: bold;">Prediction Robustness.</span> Even with stable
+        attention, we still cannot achieve stable
+        results due to the change
+        in
+        text embeddings when facing perturbations, even with similar attention vectors. This requires us to impose
+        further
+        restrictions on the model's predictions. Specifically, in the face of perturbations, the model's prediction
+        should
+        remain consistent with the original distribution, meaning the model's output should be robust to
+        perturbations.
+      </p>
+      <p><span style="font-weight: bold;">Balancing Accuracy and Robustness Trade-off.</span> Accuracy and robustness
+        are
+        naturally in a trade-off relationship.
+        Our objective is to bolster stability while minimizing the decline in model accuracy, thereby mitigating
+        catastrophic errors arising from input perturbations. Consequently, we require a mechanism to uphold the
+        model's
+        performance concerning the original input.</p>
+    </div>
+  </div>
+
+  <a name="compare"></a>
   <div class="comparsionsToPriorWork">
     <h2>Comparsions to Prior Work</h2>
+    <h3></h3>
     <h3>Visual Comparison to the State-of-the-art Approaches</h3>
     <h4>(T2M-GPT,MDM,MoMask)</h4>
-    <h5>(1) Synonym Replacement: Replacing one or more words (regardless of their parts of speech) or phrases within a
+    <h5>(1) Synonym Replacement: Replacing one or more words (regardless of their parts of speech) or phrases within
+      a
       sentence.</h5>
     <div class="example">
       <h5>Example 1</h5>
@@ -147,7 +213,8 @@
         <img src="./assets/compare1/1/boot/momask.gif" alt="">
         <img src="./assets/compare1/1/boot/sato.gif" alt="">
       </div>
-      <h4 style="color: hotpink; margin-top: -90px;">Explanation: T2M-GPT, MDM, and MoMask all lack boot behavior. This
+      <h4 style="color: hotpink; margin-top: -90px;">Explanation: T2M-GPT, MDM, and MoMask all lack boot behavior.
+        This
         is a catastrophic
         error.</h4>
     </div>
@@ -192,7 +259,8 @@
         <img src="./assets/compare1/2/go/momask.gif" alt="">
         <img src="./assets/compare1/2/go/sato.gif" alt="">
       </div>
-      <h4 style="color: hotpink; margin-top: -90px;">Explanation: T2M-GPT lacks the action of moving forward, while MoMask's forward movement is uneven.</h4>
+      <h4 style="color: hotpink; margin-top: -90px;">Explanation: T2M-GPT lacks the action of moving forward, while
+        MoMask's forward movement is uneven.</h4>
     </div>
 
     <div class="example">
@@ -235,7 +303,8 @@
         <img src="./assets/compare1/3/utilize/momask.gif" alt="">
         <img src="./assets/compare1/3/utilize/sato.gif" alt="">
       </div>
-      <h4 style="color: hotpink; margin-top: -90px;">Explanation: T2M-GPT, MDM, and MoMask all lack the action of transitioning from squatting to standing up, resulting in a catastrophic error.</h4>
+      <h4 style="color: hotpink; margin-top: -90px;">Explanation: T2M-GPT, MDM, and MoMask all lack the action of
+        transitioning from squatting to standing up, resulting in a catastrophic error.</h4>
     </div>
 
     <div class="example">
@@ -278,7 +347,8 @@
         <img src="./assets/compare1/4/loop/momask.gif" alt="">
         <img src="./assets/compare1/4/loop/sato.gif" alt="">
       </div>
-      <h4 style="color: hotpink; margin-top: -90px;">Explanation: T2M-GPT, MDM, and MoMask all don't walk in a loop.</h4>
+      <h4 style="color: hotpink; margin-top: -90px;">Explanation: T2M-GPT, MDM, and MoMask all don't walk in a loop.
+      </h4>
     </div>
     <h5>(2) Cross dataset evaluation(unseen text data): Train on HumanML3D, Test on KIT-ML.</h5>
     <div class="example">
@@ -321,7 +391,8 @@
         <img src="./assets/compare2/1/motion/momask.gif" alt="">
         <img src="./assets/compare2/1/motion/sato.gif" alt="">
       </div>
-      <h4 style="color: hotpink; margin-top: -90px;">Explanation: T2M-GPT, MDM, and MoMask all remained stationary without motion a quarter of a loop to the right, resulting in a catastrophic error.</h4>
+      <h4 style="color: hotpink; margin-top: -90px;">Explanation: T2M-GPT, MDM, and MoMask all remained stationary
+        without motion a quarter of a loop to the right, resulting in a catastrophic error.</h4>
     </div>
     <h5>(3) Component Deletion(sentense structure perturbation): Removing a part of the sentence.</h5>
     <div class="example">
@@ -364,7 +435,9 @@
         <img src="./assets/compare3/1/after/momask.gif" alt="">
         <img src="./assets/compare3/1/after/sato.gif" alt="">
       </div>
-      <h4 style="color: hotpink; margin-top: -90px;">Explanation: MDM has no action, while T2M-GPT and MoMask lack the run action.</h4>
+      <h4 style="color: hotpink; margin-top: -90px;">Explanation: MDM has no action, while T2M-GPT and MoMask lack
+        the
+        run action.</h4>
     </div>
     <div class="example">
       <h5>Example2 </h5>
@@ -406,7 +479,8 @@
         <img src="./assets/compare3/3/after/momask.gif" alt="">
         <img src="./assets/compare3/3/after/sato.gif" alt="">
       </div>
-      <h4 style="color: hotpink; margin-top: -90px;">Explanation: T2M-GPT, MDM, and MoMask all took a step forward, without leaping.
+      <h4 style="color: hotpink; margin-top: -90px;">Explanation: T2M-GPT, MDM, and MoMask all took a step forward,
+        without leaping.
 
       </h4>
     </div>

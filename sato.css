@@ -6,6 +6,16 @@ body {
   h5 {
     text-align: center;
   }
+  p {
+    margin: 0 80px;
+    text-align: justify;
+  }
+}
+
+.icon {
+  background-image: url('icon.png');
+  width: 20px;
+  height: 20px;
 }
 
 .header {
@@ -47,7 +57,7 @@ body {
 .video {
   margin-top: 30px;
 }
-.video iframe {
+.video video {
   display: block;
   margin: 0 auto;
 }
