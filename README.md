@@ -98,7 +98,19 @@ A quick reference guide for using our code is provided in quickstart.ipynb.
 
 We are using two 3D human motion-language dataset: HumanML3D and KIT-ML. For both datasets, you could find the details as well as download [link](https://github.com/EricGuo5513/HumanML3D).
 We perturbed the input texts based on the two datasets mentioned. You can access the perturbed text dataset through the following [link](https://drive.google.com/file/d/1TZx-mDGeRXyuCsfuz8_oJhjiye6FWsTh/view?usp=sharing).
-
+Take HumanML3D for an example, the dataset structure should look like this:  
+```
+./dataset/HumanML3D/
+├── new_joint_vecs/
+├── texts/ # You need to replace the 'texts' folder in the original dataset with the 'texts' folder from our dataset.
+├── Mean.npy 
+├── Std.npy 
+├── train.txt
+├── val.txt
+├── test.txt
+├── train_val.txt
+└── all.txt
+```
 ### **Train**<a name="train"></a>
 
 We will release the training code soon.
