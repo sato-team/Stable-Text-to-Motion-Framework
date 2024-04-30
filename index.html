@@ -25,13 +25,13 @@
     <div class="linkButton">
       <button onclick="window.location.href=''"><img src="./assets/Arxiv.png" alt="" width="16px"
           style="margin-bottom: -3px;"> arXiv</button>
-      <button onclick="window.location.href=''"><img src=" ./assets/paper.png" alt="" width="16px"
-          style="margin-bottom: -3px;"> Paper</button>
+      <!-- <button onclick="window.location.href=''"><img src=" ./assets/paper.png" alt="" width="16px"
+          style="margin-bottom: -3px;"> Paper</button> -->
       <button onclick="window.open('https://github.com/sato-team/Stable-Text-to-Motion-Framework')"><img
           src="./assets/github.png" alt="" width="16px" style="margin-bottom: -3px;"> Code</button>
       <button
-        onclick="window.open('https://drive.google.com/file/d/1TZx-mDGeRXyuCsfuz8_oJhjiye6FWsTh/view?usp=sharing')"><img
-          src="./assets/data.png" alt="" width="16px" style="margin-bottom: -3px;"> Datasets</button>
+        onclick="window.open('https://drive.google.com/file/d/1XLvu2jfG1YKyujdANhYHV_NfFTyOJPvP/view?usp=sharing')"><img
+          src="./assets/data.png" alt="" width="16px" style="margin-bottom: -3px;"> Dataset</button>
     </div>
     <div class="anchor">
       <a href="#video"">Video</a>
@@ -55,7 +55,7 @@
   </div>
 
   <a name="abstract"></a>
-  <div class="abstract">
+  <div class="abstract" style="background-color: #eee;padding: 20px 0;">
     <h2>ABSTRACT</h2>
     <p>Is the Text to Motion model robust? Recent advancements in Text to Motion models primarily stem from more
       accurate predictions of
@@ -84,7 +84,7 @@
   </div>
 
   <a name="exist"></a>
-  <div class="existingChallenges">
+  <div class="existingChallenges" style=" padding: 20px 0;">
     <h2>Existing Challenges</h2>
     <div style="text-align: center; font-weight: bold;"><span>Text-to-Motion task challenge:
       </span>
@@ -93,9 +93,9 @@
       <!-- <img src="./assets/challenge_left.png" alt=""> -->
       <!-- <img src="./assets/challenge_right.jpg" alt="" style="width: 800px;"> -->
       <img src="./assets/challenge.png" alt="" style="width: 640px;">
-      <video src="./video/video1.mp4" controls autoplay loop></video>
+      <video class="sizeMan" src="./video/video1.mp4" controls autoplay loop></video>
       <img src="./assets/arrow.png" alt="" style="width: 65px; height: 340px;">
-      <video src="./video/video2.mp4" controls autoplay loop></video>
+      <video class="sizeMan" src="./video/video2.mp4" controls autoplay loop></video>
     </div>
     <p>A fundamental challenge inherent in text-to-motion tasks stems from the variability of textual inputs . Even
       when
@@ -112,7 +112,7 @@
   </div>
 
   <a name="motivation"></a>
-  <div class="motivation">
+  <!-- <div class="motivation">
     <h2>Motivation</h2>
     <div style="display: flex; align-items: center; justify-items: center; margin: 0 auto;">
       <div style="display: flex; align-items: center; justify-items: center; margin: 0 auto;">
@@ -123,7 +123,7 @@
           vectors, the smaller the better.
           </p>
         </div>
-        <!-- <img src="./assets/motivation_right.jpg" alt="" width="550px"> -->
+        注释<img src="./assets/motivation_right.jpg" alt="" width="550px">
         <img src="./assets/motivation_right.jpg" alt="" width="550px" style="margin-left: 0px;">
       </div>
     </div>
@@ -134,10 +134,28 @@
       This instability further complicates the encoding of text into consistent embeddings, leading to a cascade of
       consecutive temporal motion generation errors.
     </p>
+  </div> -->
+  <div class="motivation" style=" background-color: #eee;padding: 20px 0;">
+    <h2>Motivation</h2>
+    <div class="motivation-content">
+      <div class="motivation-left">
+        <img src="./assets/motivation-left.jpg" alt="">
+        <p>JSD measures the difference between vectors, the smaller the better.</p>
+      </div>
+      <div class="motivation-right">
+        <img src="./assets/motivation_right.jpg" alt="">
+      </div>
+    </div>
+    <p>
+      The model's inconsistent outputs are accompanied by unstable attention patterns. We further elucidate the
+      aforementioned experimental findings: When perturbed text is inputted, the model exhibits unstable attention,
+      often neglecting critical text elements necessary for accurate motion prediction. This instability further
+      complicates the encoding of text into consistent embeddings, leading to a cascade of consecutive temporal motion
+      generation errors.
+    </p>
   </div>
-
   <a name="approach"></a>
-  <div class="approach">
+  <!-- <div class="approach">
     <h2>Our Approach</h2>
     <img src="./assets/network.jpg" alt="" style="display: block; width: 800px; margin: 0 auto ;">
     <div style="display: flex; gap: 10px; margin-top: 10px;">
@@ -167,9 +185,29 @@
         model's
         performance concerning the original input.</p>
     </div>
+  </div> -->
+  <div class="approach" style=" padding: 20px 0;">
+    <h2>Our Approach</h2>
+    <img src="./assets/network.jpg" alt="">
+    <div class="approach-content">
+      <p><span class="bold">Attention Stability.</span> For the original text input, we can easily observe the model's
+        attention vector for the text. This attention vector reflects the model's attentional ranking of the text,
+        indicating the importance of each word to the text encoder's prediction. We hope a stable attention vector
+        maintains a consistent ranking even after perturbations.</p>
+      <p><span class="bold">Prediction Robustness.</span> Even with stable attention, we still cannot achieve stable
+        results due to the change in text embeddings when facing perturbations, even with similar attention vectors.
+        This requires us to impose further restrictions on the model's predictions. Specifically, in the face of
+        perturbations, the model's prediction should remain consistent with the original distribution, meaning the
+        model's output should be robust to perturbations.</p>
+      <p><span class="bold">Balancing Accuracy and Robustness Trade-off.</span> Accuracy and robustness are naturally in
+        a trade-off relationship. Our objective is to bolster stability while minimizing the decline in model accuracy,
+        thereby mitigating catastrophic errors arising from input perturbations. Consequently, we require a mechanism to
+        uphold the model's performance concerning the original input.</p>
+    </div>
   </div>
 
   <a name="compare"></a>
+  <!-- <div class="comparsionsToPriorWork" style="background-color: #eee;"> -->
   <div class="comparsionsToPriorWork">
     <h2>Comparsions to Prior Work</h2>
     <h3>Quantitative evaluation on the HumanML3D and KIT-ML.</h3>
@@ -177,10 +215,9 @@
       <img src="./assets/table.png" alt="" width="1000px">
     </div>
     <h3>Visual Comparison to the State-of-the-art Approaches</h3>
-    <h4>(T2M-GPT,MDM,MoMask)</h4>
-    <h5>(1) Synonym Replacement: Replacing one or more words (regardless of their parts of speech) or phrases within
-      a
-      sentence.</h5>
+    <h4>(T2M-GPT, MDM, MoMask)</h4>
+    <h5>(1) Synonym Replacement: Replacing one or more words or phrases within a sentence.(SATO(T2M-GPT) represents
+      fine-tuning based on T2M-GPT)</h5>
     <div class="example">
       <h5>Example 1</h5>
       <h5>Original text: a man kicks something or someone with his left leg.</h5>
@@ -195,14 +232,14 @@
           <a href="https://github.com/EricGuo5513/momask-codes">MoMask</a>
         </div>
         <div class="link">
-          <a href="https://www.example.com">SATO</a>
+          <a href="https://www.example.com">SATO(T2M-GPT)</a>
         </div>
         <img src="./assets/compare1/1/kick/gpt.gif" alt="">
         <img src="./assets/compare1/1/kick/mdm.gif" alt="">
         <img src="./assets/compare1/1/kick/momask.gif" alt="">
         <img src="./assets/compare1/1/kick/sato.gif" alt="">
       </div>
-      <h5>Perturbed text: a human boots something or someone with his left leg.</h5>
+      <h5>Perturbed text: a <span style="color: red;">human boots</span> something or someone with his left leg.</h5>
       <div class="images">
         <div class="link">
           <a href="https://github.com/Mael-zys/T2M-GPT">T2M-GPT</a>
@@ -214,14 +251,15 @@
           <a href="https://github.com/EricGuo5513/momask-codes">MoMask</a>
         </div>
         <div class="link">
-          <a href="https://www.example.com">SATO</a>
+          <a href="https://www.example.com">SATO(T2M-GPT)</a>
         </div>
         <img src="./assets/compare1/1/boot/gpt.gif" alt="">
         <img src="./assets/compare1/1/boot/mdm.gif" alt="">
         <img src="./assets/compare1/1/boot/momask.gif" alt="">
         <img src="./assets/compare1/1/boot/sato.gif" alt="">
       </div>
-      <h4 style="color: hotpink; margin-top: -90px;">Explanation: T2M-GPT, MDM, and MoMask all lack boot behavior.
+      <h4 style="color: hotpink; margin-top: -90px;" class="pink">Explanation: T2M-GPT, MDM, and MoMask all lack boot
+        behavior.
         This
         is a catastrophic
         error.</h4>
@@ -241,14 +279,14 @@
           <a href="https://github.com/EricGuo5513/momask-codes">MoMask</a>
         </div>
         <div class="link">
-          <a href="https://www.example.com">SATO</a>
+          <a href="https://www.example.com">SATO(T2M-GPT)</a>
         </div>
         <img src="images/GIF1/9/walk/gpt.gif" alt="">
         <img src="images/GIF1/9/walk/mdm.gif" alt="">
         <img src="images/GIF1/9/walk/momask.gif" alt="">
         <img src="images/GIF1/9/walk/sato.gif" alt="">
       </div>
-      <h5>Perturbed text: Going ahead in an even pace.</h5>
+      <h5>Perturbed text: <span style="color: red;">Going ahead</span> in an even pace.</h5>
       <div class="images">
         <div class="link">
           <a href="https://github.com/Mael-zys/T2M-GPT">T2M-GPT</a>
@@ -260,14 +298,15 @@
           <a href="https://github.com/EricGuo5513/momask-codes">MoMask</a>
         </div>
         <div class="link">
-          <a href="https://www.example.com">SATO</a>
+          <a href="https://www.example.com">SATO(T2M-GPT)</a>
         </div>
         <img src="images/GIF1/9/go/gpt.gif" alt="">
         <img src="images/GIF1/9/go/mdm.gif" alt="">
         <img src="images/GIF1/9/go/momask.gif" alt="">
         <img src="images/GIF1/9/go/sato.gif" alt="">
       </div>
-      <h4 style="color: hotpink; margin-top: -90px;">Explanation: T2M-GPT lacks the action of moving forward, while
+      <h4 style="color: hotpink; margin-top: -90px;" class="pink">Explanation: T2M-GPT lacks the action of moving
+        forward, while
         MoMask's forward movement is uneven.</h4>
     </div>
 
@@ -285,14 +324,15 @@
           <a href="https://github.com/EricGuo5513/momask-codes">MoMask</a>
         </div>
         <div class="link">
-          <a href="https://www.example.com">SATO</a>
+          <a href="https://www.example.com">SATO(T2M-GPT)</a>
         </div>
         <img src="images/GIF1/8/use/gpt.gif" alt="">
         <img src="images/GIF1/8/use/mdm.gif" alt="">
         <img src="images/GIF1/8/use/momask.gif" alt="">
         <img src="images/GIF1/8/use/sato.gif" alt="">
       </div>
-      <h5>Perturbed text: A human utilizes his right arm to help himself to stand up.</h5>
+      <h5>Perturbed text: A <span style="color: red;">human utilizes</span> his right arm to help himself to stand up.
+      </h5>
       <div class="images">
         <div class="link">
           <a href="https://github.com/Mael-zys/T2M-GPT">T2M-GPT</a>
@@ -304,14 +344,15 @@
           <a href="https://github.com/EricGuo5513/momask-codes">MoMask</a>
         </div>
         <div class="link">
-          <a href="https://www.example.com">SATO</a>
+          <a href="https://www.example.com">SATO(T2M-GPT)</a>
         </div>
         <img src="images/GIF1/8/utilize/gpt.gif" alt="">
         <img src="images/GIF1/8/utilize/mdm.gif" alt="">
         <img src="images/GIF1/8/utilize/momask.gif" alt="">
         <img src="images/GIF1/8/utilize/sato.gif" alt="">
       </div>
-      <h4 style="color: hotpink; margin-top: -90px;">Explanation: T2M-GPT, MDM, and MoMask all lack the action of
+      <h4 style="color: hotpink; margin-top: -90px;" class="pink">Explanation: T2M-GPT, MDM, and MoMask all lack the
+        action of
         transitioning from squatting to standing up, resulting in a catastrophic error.</h4>
     </div>
 
@@ -329,14 +370,15 @@
           <a href="https://github.com/EricGuo5513/momask-codes">MoMask</a>
         </div>
         <div class="link">
-          <a href="https://www.example.com">SATO</a>
+          <a href="https://www.example.com">SATO(T2M-GPT)</a>
         </div>
         <img src="images/GIF1/3/circle/gpt.gif" alt="">
         <img src="images/GIF1/3/circle/mdm.gif" alt="">
         <img src="images/GIF1/3/circle/momask.gif" alt="">
         <img src="images/GIF1/3/circle/sato.gif" alt="">
       </div>
-      <h5>Perturbed text: Human is walking usually in a loop.</h5>
+      <h5>Perturbed text: <span style="color: red;">Human</span> is walking <span style="color: red;">usually</span> in
+        a <span style="color: red;">loop</span>.</h5>
       <div class="images">
         <div class="link">
           <a href="https://github.com/Mael-zys/T2M-GPT">T2M-GPT</a>
@@ -348,14 +390,15 @@
           <a href="https://github.com/EricGuo5513/momask-codes">MoMask</a>
         </div>
         <div class="link">
-          <a href="https://www.example.com">SATO</a>
+          <a href="https://www.example.com">SATO(T2M-GPT)</a>
         </div>
         <img src="images/GIF1/3/loop/gpt.gif" alt="">
         <img src="images/GIF1/3/loop/mdm.gif" alt="">
         <img src="images/GIF1/3/loop/momask.gif" alt="">
         <img src="images/GIF1/3/loop/sato.gif" alt="">
       </div>
-      <h4 style="color: hotpink; margin-top: -90px;">Explanation: T2M-GPT, MDM, and MoMask all don't walk in a loop.
+      <h4 style="color: hotpink; margin-top: -90px;" class="pink">Explanation: T2M-GPT, MDM, and MoMask all don't walk
+        in a loop.
       </h4>
     </div>
     <h5>(2) Cross dataset evaluation(unseen text data): Train on HumanML3D, Test on KIT-ML.</h5>
@@ -373,14 +416,15 @@
           <a href="https://github.com/EricGuo5513/momask-codes">MoMask</a>
         </div>
         <div class="link">
-          <a href="https://www.example.com">SATO</a>
+          <a href="https://www.example.com">SATO(T2M-GPT)</a>
         </div>
         <img src="./assets/compare2/1/walk/gpt.gif" alt="">
         <img src="./assets/compare2/1/walk/mdm.gif" alt="">
         <img src="./assets/compare2/1/walk/momask.gif" alt="">
         <img src="./assets/compare2/1/walk/sato.gif" alt="">
       </div>
-      <h5>Perturbed text: A native motions a quarter of a loop to the right.</h5>
+      <h5>Perturbed text: A <span style="color: red;">native motions</span> a quarter of a <span
+          style="color: red;">loop</span> to the right.</h5>
       <div class="images">
         <div class="link">
           <a href="https://github.com/Mael-zys/T2M-GPT">T2M-GPT</a>
@@ -392,14 +436,15 @@
           <a href="https://github.com/EricGuo5513/momask-codes">MoMask</a>
         </div>
         <div class="link">
-          <a href="https://www.example.com">SATO</a>
+          <a href="https://www.example.com">SATO(T2M-GPT)</a>
         </div>
         <img src="./assets/compare2/1/motion/gpt.gif" alt="">
         <img src="./assets/compare2/1/motion/mdm.gif" alt="">
         <img src="./assets/compare2/1/motion/momask.gif" alt="">
         <img src="./assets/compare2/1/motion/sato.gif" alt="">
       </div>
-      <h4 style="color: hotpink; margin-top: -90px;">Explanation: T2M-GPT, MDM, and MoMask all remained stationary
+      <h4 style="color: hotpink; margin-top: -90px;" class="pink">Explanation: T2M-GPT, MDM, and MoMask all remained
+        stationary
         without motion a quarter of a loop to the right, resulting in a catastrophic error.</h4>
     </div>
     <h5>(3) Component Deletion(sentense structure perturbation): Removing a part of the sentence.</h5>
@@ -417,7 +462,7 @@
           <a href="https://github.com/EricGuo5513/momask-codes">MoMask</a>
         </div>
         <div class="link">
-          <a href="https://www.example.com">SATO</a>
+          <a href="https://www.example.com">SATO(T2M-GPT)</a>
         </div>
         <img src="./assets/compare3/1/before/gpt.gif" alt="">
         <img src="./assets/compare3/1/before/mdm.gif" alt="">
@@ -436,14 +481,15 @@
           <a href="https://github.com/EricGuo5513/momask-codes">MoMask</a>
         </div>
         <div class="link">
-          <a href="https://www.example.com">SATO</a>
+          <a href="https://www.example.com">SATO(T2M-GPT)</a>
         </div>
         <img src="./assets/compare3/1/after/gpt.gif" alt="">
         <img src="./assets/compare3/1/after/mdm.gif" alt="">
         <img src="./assets/compare3/1/after/momask.gif" alt="">
         <img src="./assets/compare3/1/after/sato.gif" alt="">
       </div>
-      <h4 style="color: hotpink; margin-top: -90px;">Explanation: MDM has no action, while T2M-GPT and MoMask lack
+      <h4 style="color: hotpink; margin-top: -90px;" class="pink">Explanation: MDM has no action, while T2M-GPT and
+        MoMask lack
         the
         run action.</h4>
     </div>
@@ -461,7 +507,7 @@
           <a href="https://github.com/EricGuo5513/momask-codes">MoMask</a>
         </div>
         <div class="link">
-          <a href="https://www.example.com">SATO</a>
+          <a href="https://www.example.com">SATO(T2M-GPT)</a>
         </div>
         <img src="images/GIF2/3/before/gpt.gif" alt="">
         <img src="images/GIF2/3/before/mdm.gif" alt="">
@@ -480,14 +526,15 @@
           <a href="https://github.com/EricGuo5513/momask-codes">MoMask</a>
         </div>
         <div class="link">
-          <a href="https://www.example.com">SATO</a>
+          <a href="https://www.example.com">SATO(T2M-GPT)</a>
         </div>
         <img src="images/GIF2/3/after/gpt.gif" alt="">
         <img src="images/GIF2/3/after/mdm.gif" alt="">
         <img src="images/GIF2/3/after/momask.gif" alt="">
         <img src="images/GIF2/3/after/sato.gif" alt="">
       </div>
-      <h4 style="color: hotpink; margin-top: -90px;">Explanation: T2M-GPT, MDM, and MoMask all took a step forward,
+      <h4 style="color: hotpink; margin-top: -90px;" class="pink">Explanation: T2M-GPT, MDM, and MoMask all took a step
+        forward,
         without leaping.
 
       </h4>

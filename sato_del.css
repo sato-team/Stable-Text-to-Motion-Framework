@@ -1,0 +1,91 @@
+body {
+  font-size: 20px;
+}
+
+h2,
+h3,
+h4,
+h5 {
+  text-align: center;
+}
+
+p {
+  margin: 0 10px; /* 调整段落的左右边距 */
+  text-align: justify;
+}
+
+a {
+  text-decoration: none;
+}
+
+.icon {
+  background-image: url('icon.png');
+  width: 10px; /* 调整图标的大小 */
+  height: 10px;
+}
+
+.header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.linkButton {
+  margin-top: 5px; /* 调整按钮之间的间距 */
+}
+
+.linkButton button {
+  background: linear-gradient(to right, #ff416c, #ff4b2b);
+  color: white;
+  padding: 5px 10px; /* 调整按钮的内边距 */
+  border: none;
+  border-radius: 15px; /* 调整按钮的圆角 */
+  cursor: pointer;
+  box-shadow: 2px 4px #d35400;
+}
+
+.anchor {
+  display: flex;
+  flex-wrap: wrap; /* 当链接按钮过多时换行显示 */
+  justify-content: center; /* 水平居中显示 */
+  gap: 10px; /* 调整链接按钮之间的间距 */
+  margin-top: 10px; /* 调整链接按钮与上方元素的间距 */
+}
+
+.anchor a {
+  background: #333;
+  color: white;
+  padding: 5px 10px; /* 调整链接按钮的内边距 */
+  border-radius: 10px; /* 调整链接按钮的圆角 */
+  cursor: pointer;
+  box-shadow: 0 4px #a54200;
+}
+
+.video {
+  margin-top: 20px; /* 调整视频部分与上方元素的间距 */
+}
+
+.video video {
+  width: 100%; /* 视频宽度充满父容器 */
+}
+
+.existingChallenges .challenge img {
+  width: 100%; /* 调整挑战图片的宽度，让其自适应父容器 */
+}
+
+.example .images {
+  display: grid;
+  grid-template-columns: repeat(
+    auto-fit,
+    minmax(100px, 1fr)
+  ); /* 根据屏幕大小自动调整图片列数 */
+  gap: 5px;
+}
+
+.example .images .link {
+  text-align: center;
+}
+
+.example .images img {
+  width: 100%;
+}

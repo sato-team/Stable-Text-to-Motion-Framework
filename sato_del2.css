@@ -1,0 +1,164 @@
+body {
+  font-size: 20px;
+  h2,
+  h3,
+  h4,
+  h5 {
+    text-align: center;
+  }
+  p {
+    margin: 0 120px;
+    text-align: justify;
+  }
+  a {
+    text-decoration: none;
+  }
+}
+
+.icon {
+  background-image: url('icon.png');
+  width: 20px;
+  height: 20px;
+}
+
+.header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.linkButton {
+  margin-top: 10px;
+}
+.linkButton button {
+  /* background: #3498db; */
+  background: linear-gradient(to right, #ff416c, #ff4b2b);
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 25px;
+  cursor: pointer;
+  box-shadow: 2px 4px #d35400;
+  /* box-shadow: 0 4px #2c3e50; */
+}
+
+.anchor {
+  display: flex;
+  gap: 40px;
+  margin-top: 20px;
+}
+.anchor a {
+  /* background: #f39c12; */
+  background: #333;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 50px;
+  cursor: pointer;
+  /* box-shadow: 0 4px #d35400; */
+  box-shadow: 0 4px #a54200;
+}
+
+.video {
+  margin-top: 30px;
+}
+.video video {
+  display: block;
+  margin: 0 auto;
+}
+
+.existingChallenges .challenge img {
+  width: 520px;
+}
+
+.example .images {
+  display: grid;
+  /* grid-template-columns: 1fr 1fr 1fr 1fr; */
+  grid-template-columns: repeat(4, 1fr);
+  grid-template-rows: auto auto;
+  gap: 10px;
+}
+
+.example .images .link {
+  text-align: center;
+}
+
+.example .images img {
+  width: 100%;
+}
+
+/* motivation响应式 */
+.motivation {
+  text-align: center;
+  margin: 0 auto;
+}
+
+.motivation-content {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.motivation-left,
+.motivation-right {
+  margin: 0 10px;
+  text-align: center;
+}
+
+.motivation-left img {
+  max-width: 100%;
+}
+
+.motivation-left p {
+  font-weight: 100;
+  font-size: 16px;
+  text-align: center;
+  margin-top: 10px;
+}
+
+.motivation-right img {
+  max-width: 100%;
+}
+
+@media only screen and (max-width: 768px) {
+  .motivation-content {
+    flex-direction: column;
+  }
+
+  .motivation-left,
+  .motivation-right {
+    margin: 0;
+  }
+}
+
+/* approach响应式 */
+.approach {
+  text-align: center;
+  margin: 0 auto;
+}
+
+.approach img {
+  max-width: 100%;
+  display: block;
+  margin: 0 auto;
+}
+
+.approach-content {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.approach-content p {
+  margin-right: 0;
+}
+
+.bold {
+  font-weight: bold;
+}
+
+@media only screen and (max-width: 768px) {
+  .approach-content {
+    flex-direction: column;
+  }
+}

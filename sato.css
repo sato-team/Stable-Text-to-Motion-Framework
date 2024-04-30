@@ -1,24 +1,33 @@
 body {
   font-size: 20px;
-  h2,
-  h3,
-  h4,
-  h5 {
-    text-align: center;
-  }
+}
+
+h2,
+h3,
+h4,
+h5 {
+  text-align: center;
+}
+
+p {
+  margin: 0 180px; /* 默认段落左右边距 */
+  text-align: justify;
+}
+
+@media only screen and (max-width: 768px) {
   p {
-    margin: 0 120px;
-    text-align: justify;
+    margin: 0 10px; /* 在小屏幕下调整段落左右边距为10px */
   }
-  a {
-    text-decoration: none;
-  }
+}
+
+a {
+  text-decoration: none;
 }
 
 .icon {
   background-image: url('icon.png');
-  width: 20px;
-  height: 20px;
+  width: 10px; /* 调整图标的大小 */
+  height: 10px;
 }
 
 .header {
@@ -28,55 +37,55 @@ body {
 }
 
 .linkButton {
-  margin-top: 10px;
+  margin-top: 5px; /* 调整按钮之间的间距 */
 }
+
 .linkButton button {
-  /* background: #3498db; */
   background: linear-gradient(to right, #ff416c, #ff4b2b);
   color: white;
-  padding: 10px 20px;
+  padding: 5px 10px; /* 调整按钮的内边距 */
   border: none;
-  border-radius: 25px;
+  border-radius: 15px; /* 调整按钮的圆角 */
   cursor: pointer;
   box-shadow: 2px 4px #d35400;
-  /* box-shadow: 0 4px #2c3e50; */
+  margin-left: 15px;
 }
 
 .anchor {
   display: flex;
-  gap: 40px;
-  margin-top: 20px;
+  flex-wrap: wrap; /* 当链接按钮过多时换行显示 */
+  justify-content: center; /* 水平居中显示 */
+  gap: 10px; /* 调整链接按钮之间的间距 */
+  margin-top: 10px; /* 调整链接按钮与上方元素的间距 */
 }
+
 .anchor a {
-  /* background: #f39c12; */
   background: #333;
   color: white;
-  padding: 10px 20px;
-  border: none;
-  border-radius: 50px;
+  padding: 5px 10px; /* 调整链接按钮的内边距 */
+  border-radius: 10px; /* 调整链接按钮的圆角 */
   cursor: pointer;
-  /* box-shadow: 0 4px #d35400; */
   box-shadow: 0 4px #a54200;
 }
 
 .video {
-  margin-top: 30px;
+  margin-top: 20px; /* 调整视频部分与上方元素的间距 */
 }
+
 .video video {
-  display: block;
-  margin: 0 auto;
+  width: 100%; /* 视频宽度充满父容器 */
 }
 
 .existingChallenges .challenge img {
-  width: 520px;
+  width: 100%; /* 调整挑战图片的宽度，让其自适应父容器 */
 }
 
 .example .images {
   display: grid;
-  /* grid-template-columns: 1fr 1fr 1fr 1fr; */
   grid-template-columns: repeat(4, 1fr);
   grid-template-rows: auto auto;
-  gap: 10px;
+  /* grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)); */
+  gap: 5px;
 }
 
 .example .images .link {
@@ -85,4 +94,193 @@ body {
 
 .example .images img {
   width: 100%;
+}
+
+/* motivation响应式 */
+.motivation {
+  text-align: center;
+  margin: 0 auto;
+}
+
+.motivation-content {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.motivation-left,
+.motivation-right {
+  margin: 0 10px;
+  text-align: center;
+  flex: 1;
+}
+
+.motivation-left {
+  margin-right: -60px;
+}
+
+.motivation-right {
+  margin-left: -50px;
+}
+
+.motivation-left img,
+.motivation-right img {
+  max-width: 80%;
+}
+
+.motivation-left p {
+  font-weight: 100;
+  font-size: 12px;
+  text-align: center;
+  margin-top: 10px;
+}
+
+@media only screen and (max-width: 768px) {
+  .motivation-content {
+    flex-direction: column;
+  }
+
+  .motivation-left,
+  .motivation-right {
+    margin: 0;
+  }
+
+  .motivation-left,
+  .motivation-right {
+    width: 100%; /* 在小屏幕下宽度铺满 */
+  }
+}
+
+/* approach响应式 */
+.approach {
+  text-align: center;
+  margin: 0 auto;
+}
+
+.approach img {
+  max-width: 70%;
+  display: block;
+  margin: 0 auto;
+}
+
+.approach-content {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.bold {
+  font-weight: bold;
+}
+
+@media only screen and (max-width: 768px) {
+  .approach img {
+    max-width: 100%;
+    display: block;
+    margin: 0 auto;
+  }
+
+  .approach-content {
+    flex-direction: column;
+  }
+
+  .approach-content p {
+    margin-right: 0;
+  }
+}
+
+/* comparsionsToPriorWork响应式 */
+.comparsionsToPriorWork {
+  text-align: center;
+}
+
+.comparsionsToPriorWork img {
+  max-width: 100%; /* 图片宽度设置为100% */
+}
+
+.comparsionsToPriorWork h3 {
+  margin: 10px 0; /* 顶部和底部的间距 */
+}
+
+.example {
+  margin: 20px 0; /* 顶部和底部的间距 */
+}
+
+.images {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.images img {
+  max-width: 100%; /* 图片宽度设置为100% */
+}
+
+.images .link {
+  margin: 10px; /* 链接之间的间距 */
+}
+
+/* example 响应式 */
+@media only screen and (max-width: 768px) {
+  .comparsionsToPriorWork .example .pink {
+    margin-top: 0px !important;
+  }
+}
+
+/* exist 响应式 */
+@media only screen and (max-width: 768px) {
+  .existingChallenges {
+    text-align: center;
+  }
+
+  .existingChallenges img {
+    max-width: 100%; /* 图片宽度设置为100% */
+    height: auto; /* 自动调整图片高度 */
+  }
+
+  .existingChallenges video {
+    max-width: 100%; /* 视频宽度设置为100% */
+    height: auto; /* 自动调整视频高度 */
+  }
+
+  .existingChallenges video::-webkit-media-controls-timeline {
+    background-color: red;
+  }
+
+  .existingChallenges video::-webkit-media-controls-fill-lower {
+    background-color: red;
+  }
+
+  .existingChallenges p {
+    margin: 20px;
+  }
+
+  .existingChallenges h2 {
+    margin: 10px 0; /* 顶部和底部的间距 */
+  }
+
+  .existingChallenges div {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .existingChallenges .challenge {
+    margin-top: 10px;
+    margin-bottom: 10px;
+  }
+
+  .existingChallenges span {
+    font-weight: bold;
+  }
+
+  .existingChallenges span:nth-child(2) {
+    color: rgb(8, 221, 65);
+  }
+}
+
+@media only screen and (max-width: 768px) {
+  .sizeMan {
+    width: 40%;
+  }
 }
