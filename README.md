@@ -3,7 +3,8 @@
 [Wenshuo chen*](https://github.com/shurdy123), [Hongru Xiao*](https://github.com/Hongru0306), [Erhang Zhang*](https://github.com/zhangerhang), [Lijie Hu](https://sites.google.com/view/lijiehu/homepage), [Lei Wang](https://leiwangr.github.io/), [Mengyuan Liu](), [Chen Chen](https://www.crcv.ucf.edu/chenchen/)
 
 [![Website shields.io](https://img.shields.io/website?url=http%3A//poco.is.tue.mpg.de)](https://sato-team.github.io/Stable-Text-to-Motion-Framework/) [![YouTube Badge](https://img.shields.io/badge/YouTube-Watch-red?style=flat-square&logo=youtube)]()  [![arXiv](https://img.shields.io/badge/arXiv-2308.12965-00ff00.svg)]()  
-
+## Existing Challenges
+A fundamental challenge inherent in text-to-motion tasks stems from the variability of textual inputs . Even when conveying similar or the same meanings and intentions, texts can exhibit considerable variations in vocabulary and structure due to individual user preferences or linguistic nuances. Despite the considerable advancements made in these models, we find a notable weakness: all of them demonstrate instability in prediction when encountering minor textual perturbations, such as synonym substitutions.
 <!-- <div style="display:flex;">
     <img src="assets/run_lola.gif" width="45%" style="margin-right: 1%;">
     <img src="assets/yt_solo.gif" width="45%">
@@ -46,6 +47,7 @@
   </tr>
 </table>
 </p>
+## Motivation
 
 
 ## Table of Content
