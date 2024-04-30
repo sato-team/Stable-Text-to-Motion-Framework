@@ -1,7 +1,7 @@
 # SATO: Stable Text-to-Motion Framework
 
-[Wenshuo chen](https://github.com/shurdy123), [Hongru Xiao](https://github.com/Hongru0306), [Erhang Zhang](https://github.com/zhangerhang), [Lijie Hu](https://sites.google.com/view/lijiehu/homepage), [Lei Wang](https://leiwangr.github.io/), [Mengyuan Liu](), [Chen Chen](https://www.crcv.ucf.edu/chenchen/)
-
+[Wenshuo chen*](https://github.com/shurdy123), [Hongru Xiao*](https://github.com/Hongru0306), [Erhang Zhang*](https://github.com/zhangerhang), [Lijie Hu](https://sites.google.com/view/lijiehu/homepage), [Lei Wang](https://leiwangr.github.io/), [Mengyuan Liu](), [Chen Chen](https://www.crcv.ucf.edu/chenchen/)
+(Note: Equal contribution.)
 [![Website shields.io](https://img.shields.io/website?url=http%3A//poco.is.tue.mpg.de)]() [![YouTube Badge](https://img.shields.io/badge/YouTube-Watch-red?style=flat-square&logo=youtube)]()  [![arXiv](https://img.shields.io/badge/arXiv-2308.12965-00ff00.svg)]()  
 
 <!-- <div style="display:flex;">
