@@ -13,7 +13,7 @@ A fundamental challenge inherent in text-to-motion tasks stems from the variabil
 <p align="center">
 <table align="center">
   <tr>
-    <th colspan="4">Original text: Walking forward in an even pace.</th>
+    <th colspan="4">Original text: a man kicks something or someone with his left leg.</th>
   </tr>
   <tr>
     <th align="center"><u><a href="https://github.com/Mael-zys/T2M-GPT"><nobr>T2M-GPT</nobr> </a></u></th>
@@ -23,14 +23,14 @@ A fundamental challenge inherent in text-to-motion tasks stems from the variabil
   </tr>
 
   <tr>
-    <td width="250" align="center"><img src="images/example/walk/gpt.gif" width="150px" height="150px" alt="gif"></td>
-    <td width="250" align="center"><img src="images/example/walk/mdm.gif" width="150px" height="150px" alt="gif"></td>
-    <td width="250" align="center"><img src="images/example/walk/momask.gif" width="150px" height="150px" alt="gif"></td>
-    <td width="250" align="center"><img src="images/example/walk/sato.gif" width="150px" height="150px" alt="gif"></td>
+    <td width="250" align="center"><img src="images/example/kick/gpt.gif" width="150px" height="150px" alt="gif"></td>
+    <td width="250" align="center"><img src="images/example/kick/mdm.gif" width="150px" height="150px" alt="gif"></td>
+    <td width="250" align="center"><img src="images/example/kick/momask.gif" width="150px" height="150px" alt="gif"></td>
+    <td width="250" align="center"><img src="images/example/kick/sato.gif" width="150px" height="150px" alt="gif"></td>
   </tr>
 
   <tr>
-    <th colspan="4" >Perturbed text: <span style="color: red;">Going ahead</span> in an even pace.</th>
+    <th colspan="4" >Perturbed text: a human <span style="color: red;">boots</span> something or someone with his left leg.</th>
   </tr>
   <tr>
     <th align="center"><u><a href="https://github.com/Mael-zys/T2M-GPT"><nobr>T2M-GPT</nobr> </a></u></th>
@@ -40,10 +40,10 @@ A fundamental challenge inherent in text-to-motion tasks stems from the variabil
   </tr>
 
   <tr>
-    <td width="250" align="center"><img src="images/example/go/gpt.gif" width="150px" height="150px" alt="gif"></td>
-    <td width="250" align="center"><img src="images/example/go/mdm.gif" width="150px" height="150px" alt="gif"></td>
-    <td width="250" align="center"><img src="images/example/go/momask.gif" width="150px" height="150px" alt="gif"></td>
-    <td width="250" align="center"><img src="images/example/go/sato.gif" width="150px" height="150px" alt="gif"></td>
+    <td width="250" align="center"><img src="images/example/boot/gpt.gif" width="150px" height="150px" alt="gif"></td>
+    <td width="250" align="center"><img src="images/example/boot/mdm.gif" width="150px" height="150px" alt="gif"></td>
+    <td width="250" align="center"><img src="images/example/boot/momask.gif" width="150px" height="150px" alt="gif"></td>
+    <td width="250" align="center"><img src="images/example/boot/sato.gif" width="150px" height="150px" alt="gif"></td>
   </tr>
 </table>
 </p>
