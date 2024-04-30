@@ -22,10 +22,10 @@
   </tr>
 
   <tr>
-    <td width="250" align="center"><img src="images/example/walk/gpt.gif" width="250px" height="250px" alt="gif"></td>
-    <td width="250" align="center"><img src="images/example/walk/mdm.gif" width="250px" height="250px" alt="gif"></td>
-    <td width="250" align="center"><img src="images/example/walk/momask.gif" width="250px" height="250px" alt="gif"></td>
-    <td width="250" align="center"><img src="images/example/walk/sato.gif" width="250px" height="250px" alt="gif"></td>
+    <td width="250" align="center"><img src="images/example/walk/gpt.gif" width="150px" height="150px" alt="gif"></td>
+    <td width="250" align="center"><img src="images/example/walk/mdm.gif" width="150px" height="150px" alt="gif"></td>
+    <td width="250" align="center"><img src="images/example/walk/momask.gif" width="150px" height="150px" alt="gif"></td>
+    <td width="250" align="center"><img src="images/example/walk/sato.gif" width="150px" height="150px" alt="gif"></td>
   </tr>
 
   <tr>
@@ -39,10 +39,10 @@
   </tr>
 
   <tr>
-    <td width="250" align="center"><img src="images/example/go/gpt.gif" width="250px" height="250px" alt="gif"></td>
-    <td width="250" align="center"><img src="images/example/go/mdm.gif" width="250px" height="250px" alt="gif"></td>
-    <td width="250" align="center"><img src="images/example/go/momask.gif" width="250px" height="250px" alt="gif"></td>
-    <td width="250" align="center"><img src="images/example/go/sato.gif" width="250px" height="250px" alt="gif"></td>
+    <td width="250" align="center"><img src="images/example/go/gpt.gif" width="150px" height="150px" alt="gif"></td>
+    <td width="250" align="center"><img src="images/example/go/mdm.gif" width="150px" height="150px" alt="gif"></td>
+    <td width="250" align="center"><img src="images/example/go/momask.gif" width="150px" height="150px" alt="gif"></td>
+    <td width="250" align="center"><img src="images/example/go/sato.gif" width="150px" height="150px" alt="gif"></td>
   </tr>
 </table>
 </p>
