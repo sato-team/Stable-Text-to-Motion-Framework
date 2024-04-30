@@ -42,30 +42,27 @@
 
   <div class="abstract">
     <h2>ABSTRACT</h2>
-    <p>Is the Text to Motion model robust? Recent advancements in Text
-      to Motion models primarily stem from more accurate predictions of
+    <p>Is the Text to Motion model robust? Recent advancements in Text to Motion models primarily stem from more accurate predictions of
       specific actions. However, the text modality typically relies solely on
       pre-trained Contrastive Language-Image Pretraining (CLIP) models.
-      Our research has uncovered a significant issue with the text-tomotion model: its predictions often exhibit
-      inconsistent outputs,
-      resulting in vastly different or even incorrect poses when presented
+      Our research has uncovered a significant issue with the text-to motion model: its predictions often exhibit
+      inconsistent outputs, resulting in vastly different or even incorrect poses when presented
       with semantically similar or identical text inputs. In this paper, we
       undertake an analysis to elucidate the underlying causes of this
       instability, establishing a clear link between the unpredictability
-      of model outputs and the erratic attention patterns of the text encoder module. Consequently, we introduce a
+      of model outputs and the erratic attention patterns of the text encoder module. Consequently, we introduce a
       formal
       framework
-      aimed at addressing this issue, which we term the Stable Textto-Motion Framework (SATO). SATO consists of three
+      aimed at addressing this issue, which we term the Stable Text to-Motion Framework (SATO). SATO consists of three
       modules,
-      each dedicated to stable attention, stable prediction, and maintaining a balance between accuracy and robustness
-      trade-off. We
-      present a methodology for constructing an SATO that satisfies
+      each dedicated to stable attention, stable prediction, and maintaining a balance between accuracy and robustness
+      trade-off. We present a methodology for constructing an SATO that satisfies
       the stability of attention and prediction. To verify the stability of
       the model, we introduced a new textual synonym perturbation
       dataset based on HumanML3D and KIT-ML. Results show that
       SATO is significantly more stable against synonyms and other
       slight perturbations while keeping its high accuracy performance.
-      We have presented more intuitive visualizations on the anonymous website:
+      We have presented more intuitive visualizations on the anony mous website:
       https://anonymous.4open.science/api/repo/project-
       1FC7/file/SATO.html</p>
   </div>
@@ -80,8 +77,8 @@
       conveying similar or the same meanings and intentions, texts can exhibit considerable variations in vocabulary and
       structure due to individual user preferences or linguistic nuances. Despite the considerable advancements made in
       these models, we find a notable weakness: all of them demonstrate instability in prediction when encountering
-      minor textual perturbations, such as synonym substitutions.  We establish a clear link between the
-      unpredictability of model outputs and the erratic attention patterns of the text encoder module.  The stability of
+      minor textual perturbations, such as synonym substitutions. We establish a clear link between the
+      unpredictability of model outputs and the erratic attention patterns of the text encoder module. The stability of
       the model manifests in the consistency of textual attentionand its ability to handle perturbations in text
       features, highlighting its pivotal role in mitigating such errors.</p>
   </div>
@@ -89,18 +86,18 @@
   <div class="network">
     <h2>Network</h2>
     <img src="./assets/network.jpg" alt="" style="display: block; width: 800px; margin: 0 auto ;">
-    <p>Attention Stability. For the original text input, we can easily observe the model’s attention vector for the
-      text. This attention vector reflects the model’s attentional ranking of the text, indicating the importance of
-      each word to the text encoder’s prediction. We hope a stable attention vector maintains a consistent ranking even
+    <p>Attention Stability. For the original text input, we can easily observe the model's attention vector for the
+      text. This attention vector reflects the model's attentional ranking of the text, indicating the importance of
+      each word to the text encoder's prediction. We hope a stable attention vector maintains a consistent ranking even
       after perturbations.</p>
     <p>Prediction Robustness. Even with stable attention, we still cannot achieve stable results due to the change in
       text embeddings when facing perturbations, even with similar attention vectors. This requires us to impose further
-      restrictions on the model’s predictions. Specifically, in the face of perturbations, the model’s prediction should
-      remain consistent with the original distribution, meaning the model’s output should be robust to perturbations.
+      restrictions on the model's predictions. Specifically, in the face of perturbations, the model's prediction should
+      remain consistent with the original distribution, meaning the model's output should be robust to perturbations.
     </p>
     <p>Balancing Accuracy and Robustness. Accuracy and robustness are naturally in a trade-off relationship [21, 30].
       Our objective is to bolster stability while minimizing the decline in model accuracy, thereby mitigating
-      catastrophic errors arising from input perturbations. Consequently, we require a mechanism to uphold the model’s
+      catastrophic errors arising from input perturbations. Consequently, we require a mechanism to uphold the model's
       performance concerning the original input.</p>
   </div>
 
@@ -115,7 +112,7 @@
       <h5>Original text: a man kicks something or someone with his left leg.</h5>
       <div class="images">
         <div class="link">
-          <a href="https://github.com/Mael-zys/T2M-GPT">GPT</a>
+          <a href="https://github.com/Mael-zys/T2M-GPT">T2M</a>
         </div>
         <div class="link">
           <a href="https://guytevet.github.io/mdm-page/">MDM</a>
@@ -134,7 +131,7 @@
       <h5>Perturbed text: a human boots something or someone with his left leg.</h5>
       <div class="images">
         <div class="link">
-          <a href="https://github.com/Mael-zys/T2M-GPT">GPT</a>
+          <a href="https://github.com/Mael-zys/T2M-GPT">T2M</a>
         </div>
         <div class="link">
           <a href="https://guytevet.github.io/mdm-page/">MDM</a>
@@ -157,10 +154,10 @@
 
     <div class="example">
       <h5>Example 2</h5>
-      <h5>Original text: a person jumps straight to the left, then jumps straight back to the right.</h5>
+      <h5>Original text: Walking forward in an even pace.</h5>
       <div class="images">
         <div class="link">
-          <a href="https://github.com/Mael-zys/T2M-GPT">GPT</a>
+          <a href="https://github.com/Mael-zys/T2M-GPT">T2M</a>
         </div>
         <div class="link">
           <a href="https://guytevet.github.io/mdm-page/">MDM</a>
@@ -171,15 +168,15 @@
         <div class="link">
           <a href="https://www.example.com">SATO</a>
         </div>
-        <img src="./assets/compare2/2/jump/gpt.gif" alt="">
-        <img src="./assets/compare2/2/jump/mdm.gif" alt="">
-        <img src="./assets/compare2/2/jump/momask.gif" alt="">
-        <img src="./assets/compare2/2/jump/sato.gif" alt="">
+        <img src="./assets/compare1/2/walk/gpt.gif" alt="">
+        <img src="./assets/compare1/2/walk/mdm.gif" alt="">
+        <img src="./assets/compare1/2/walk/momask.gif" alt="">
+        <img src="./assets/compare1/2/walk/sato.gif" alt="">
       </div>
-      <h5>Perturbed text: a individual bounds ahead then stands straight.</h5>
+      <h5>Perturbed text: Going ahead in an even pace.</h5>
       <div class="images">
         <div class="link">
-          <a href="https://github.com/Mael-zys/T2M-GPT">GPT</a>
+          <a href="https://github.com/Mael-zys/T2M-GPT">T2M</a>
         </div>
         <div class="link">
           <a href="https://guytevet.github.io/mdm-page/">MDM</a>
@@ -190,21 +187,20 @@
         <div class="link">
           <a href="https://www.example.com">SATO</a>
         </div>
-        <img src="./assets/compare2/2/bound/gpt.gif" alt="">
-        <img src="./assets/compare2/2/bound/mdm.gif" alt="">
-        <img src="./assets/compare2/2/bound/momask.gif" alt="">
-        <img src="./assets/compare2/2/bound/sato.gif" alt="">
+        <img src="./assets/compare1/2/go/gpt.gif" alt="">
+        <img src="./assets/compare1/2/go/mdm.gif" alt="">
+        <img src="./assets/compare1/2/go/momask.gif" alt="">
+        <img src="./assets/compare1/2/go/sato.gif" alt="">
       </div>
-      <h4 style="color: hotpink; margin-top: -90px;">Explanation: T2M-GPT, MDM, and MoMask all lack the action of
-        jumping forward and standing straight, resulting in a catastrophic error.</h4>
+      <h4 style="color: hotpink; margin-top: -90px;">Explanation: T2M-GPT lacks the action of moving forward, while MoMask's forward movement is uneven.</h4>
     </div>
 
     <div class="example">
       <h5>Example 3</h5>
-      <h5>Original text: a person jumps straight to the left, then jumps straight back to the right.</h5>
+      <h5>Original text: A person uses his right arm to help himself to stand up.</h5>
       <div class="images">
         <div class="link">
-          <a href="https://github.com/Mael-zys/T2M-GPT">GPT</a>
+          <a href="https://github.com/Mael-zys/T2M-GPT">T2M</a>
         </div>
         <div class="link">
           <a href="https://guytevet.github.io/mdm-page/">MDM</a>
@@ -215,15 +211,15 @@
         <div class="link">
           <a href="https://www.example.com">SATO</a>
         </div>
-        <img src="./assets/compare2/2/jump/gpt.gif" alt="">
-        <img src="./assets/compare2/2/jump/mdm.gif" alt="">
-        <img src="./assets/compare2/2/jump/momask.gif" alt="">
-        <img src="./assets/compare2/2/jump/sato.gif" alt="">
+        <img src="./assets/compare1/3/use/gpt.gif" alt="">
+        <img src="./assets/compare1/3/use/mdm.gif" alt="">
+        <img src="./assets/compare1/3/use/momask.gif" alt="">
+        <img src="./assets/compare1/3/use/sato.gif" alt="">
       </div>
-      <h5>Perturbed text: a individual bounds ahead then stands straight.</h5>
+      <h5>Perturbed text: A human utilizes his right arm to help himself to stand up.</h5>
       <div class="images">
         <div class="link">
-          <a href="https://github.com/Mael-zys/T2M-GPT">GPT</a>
+          <a href="https://github.com/Mael-zys/T2M-GPT">T2M</a>
         </div>
         <div class="link">
           <a href="https://guytevet.github.io/mdm-page/">MDM</a>
@@ -234,13 +230,185 @@
         <div class="link">
           <a href="https://www.example.com">SATO</a>
         </div>
-        <img src="./assets/compare2/2/bound/gpt.gif" alt="">
-        <img src="./assets/compare2/2/bound/mdm.gif" alt="">
-        <img src="./assets/compare2/2/bound/momask.gif" alt="">
-        <img src="./assets/compare2/2/bound/sato.gif" alt="">
+        <img src="./assets/compare1/3/utilize/gpt.gif" alt="">
+        <img src="./assets/compare1/3/utilize/mdm.gif" alt="">
+        <img src="./assets/compare1/3/utilize/momask.gif" alt="">
+        <img src="./assets/compare1/3/utilize/sato.gif" alt="">
       </div>
-      <h4 style="color: hotpink; margin-top: -90px;">Explanation: T2M-GPT, MDM, and MoMask all lack the action of
-        jumping forward and standing straight, resulting in a catastrophic error.</h4>
+      <h4 style="color: hotpink; margin-top: -90px;">Explanation: T2M-GPT, MDM, and MoMask all lack the action of transitioning from squatting to standing up, resulting in a catastrophic error.</h4>
+    </div>
+
+    <div class="example">
+      <h5>Example 4</h5>
+      <h5>Original text: Person is walking normally in a circle.</h5>
+      <div class="images">
+        <div class="link">
+          <a href="https://github.com/Mael-zys/T2M-GPT">T2M</a>
+        </div>
+        <div class="link">
+          <a href="https://guytevet.github.io/mdm-page/">MDM</a>
+        </div>
+        <div class="link">
+          <a href="https://github.com/EricGuo5513/momask-codes">MoMask</a>
+        </div>
+        <div class="link">
+          <a href="https://www.example.com">SATO</a>
+        </div>
+        <img src="./assets/compare1/4/circle/gpt.gif" alt="">
+        <img src="./assets/compare1/4/circle/mdm.gif" alt="">
+        <img src="./assets/compare1/4/circle/momask.gif" alt="">
+        <img src="./assets/compare1/4/circle/sato.gif" alt="">
+      </div>
+      <h5>Perturbed text: Human is walking usually in a loop.</h5>
+      <div class="images">
+        <div class="link">
+          <a href="https://github.com/Mael-zys/T2M-GPT">T2M</a>
+        </div>
+        <div class="link">
+          <a href="https://guytevet.github.io/mdm-page/">MDM</a>
+        </div>
+        <div class="link">
+          <a href="https://github.com/EricGuo5513/momask-codes">MoMask</a>
+        </div>
+        <div class="link">
+          <a href="https://www.example.com">SATO</a>
+        </div>
+        <img src="./assets/compare1/4/loop/gpt.gif" alt="">
+        <img src="./assets/compare1/4/loop/mdm.gif" alt="">
+        <img src="./assets/compare1/4/loop/momask.gif" alt="">
+        <img src="./assets/compare1/4/loop/sato.gif" alt="">
+      </div>
+      <h4 style="color: hotpink; margin-top: -90px;">Explanation: T2M-GPT, MDM, and MoMask all don't walk in a loop.</h4>
+    </div>
+    <h5>(2) Cross dataset evaluation(unseen text data): Train on HumanML3D, Test on KIT-ML.</h5>
+    <div class="example">
+      <h5>Example </h5>
+      <h5>Original text: A human walks a quarter of a circle to the right.</h5>
+      <div class="images">
+        <div class="link">
+          <a href="https://github.com/Mael-zys/T2M-GPT">T2M</a>
+        </div>
+        <div class="link">
+          <a href="https://guytevet.github.io/mdm-page/">MDM</a>
+        </div>
+        <div class="link">
+          <a href="https://github.com/EricGuo5513/momask-codes">MoMask</a>
+        </div>
+        <div class="link">
+          <a href="https://www.example.com">SATO</a>
+        </div>
+        <img src="./assets/compare2/1/walk/gpt.gif" alt="">
+        <img src="./assets/compare2/1/walk/mdm.gif" alt="">
+        <img src="./assets/compare2/1/walk/momask.gif" alt="">
+        <img src="./assets/compare2/1/walk/sato.gif" alt="">
+      </div>
+      <h5>Perturbed text: A native motions a quarter of a loop to the right.</h5>
+      <div class="images">
+        <div class="link">
+          <a href="https://github.com/Mael-zys/T2M-GPT">T2M</a>
+        </div>
+        <div class="link">
+          <a href="https://guytevet.github.io/mdm-page/">MDM</a>
+        </div>
+        <div class="link">
+          <a href="https://github.com/EricGuo5513/momask-codes">MoMask</a>
+        </div>
+        <div class="link">
+          <a href="https://www.example.com">SATO</a>
+        </div>
+        <img src="./assets/compare2/1/motion/gpt.gif" alt="">
+        <img src="./assets/compare2/1/motion/mdm.gif" alt="">
+        <img src="./assets/compare2/1/motion/momask.gif" alt="">
+        <img src="./assets/compare2/1/motion/sato.gif" alt="">
+      </div>
+      <h4 style="color: hotpink; margin-top: -90px;">Explanation: T2M-GPT, MDM, and MoMask all remained stationary without motion a quarter of a loop to the right, resulting in a catastrophic error.</h4>
+    </div>
+    <h5>(3) Component Deletion(sentense structure perturbation): Removing a part of the sentence.</h5>
+    <div class="example">
+      <h5>Example1 </h5>
+      <h5>Original text: A person runs and jumps forward.</h5>
+      <div class="images">
+        <div class="link">
+          <a href="https://github.com/Mael-zys/T2M-GPT">T2M</a>
+        </div>
+        <div class="link">
+          <a href="https://guytevet.github.io/mdm-page/">MDM</a>
+        </div>
+        <div class="link">
+          <a href="https://github.com/EricGuo5513/momask-codes">MoMask</a>
+        </div>
+        <div class="link">
+          <a href="https://www.example.com">SATO</a>
+        </div>
+        <img src="./assets/compare3/1/before/gpt.gif" alt="">
+        <img src="./assets/compare3/1/before/mdm.gif" alt="">
+        <img src="./assets/compare3/1/before/momask.gif" alt="">
+        <img src="./assets/compare3/1/before/sato.gif" alt="">
+      </div>
+      <h5>Perturbed text: Runs and jumps forward.</h5>
+      <div class="images">
+        <div class="link">
+          <a href="https://github.com/Mael-zys/T2M-GPT">T2M</a>
+        </div>
+        <div class="link">
+          <a href="https://guytevet.github.io/mdm-page/">MDM</a>
+        </div>
+        <div class="link">
+          <a href="https://github.com/EricGuo5513/momask-codes">MoMask</a>
+        </div>
+        <div class="link">
+          <a href="https://www.example.com">SATO</a>
+        </div>
+        <img src="./assets/compare3/1/after/gpt.gif" alt="">
+        <img src="./assets/compare3/1/after/mdm.gif" alt="">
+        <img src="./assets/compare3/1/after/momask.gif" alt="">
+        <img src="./assets/compare3/1/after/sato.gif" alt="">
+      </div>
+      <h4 style="color: hotpink; margin-top: -90px;">Explanation: MDM has no action, while T2M-GPT and MoMask lack the run action.</h4>
+    </div>
+    <div class="example">
+      <h5>Example2 </h5>
+      <h5>Original text: A person leaps forward then stands straight.</h5>
+      <div class="images">
+        <div class="link">
+          <a href="https://github.com/Mael-zys/T2M-GPT">T2M</a>
+        </div>
+        <div class="link">
+          <a href="https://guytevet.github.io/mdm-page/">MDM</a>
+        </div>
+        <div class="link">
+          <a href="https://github.com/EricGuo5513/momask-codes">MoMask</a>
+        </div>
+        <div class="link">
+          <a href="https://www.example.com">SATO</a>
+        </div>
+        <img src="./assets/compare3/3/before/gpt.gif" alt="">
+        <img src="./assets/compare3/3/before/mdm.gif" alt="">
+        <img src="./assets/compare3/3/before/momask.gif" alt="">
+        <img src="./assets/compare3/3/before/sato.gif" alt="">
+      </div>
+      <h5>Perturbed text: Leaps forward then stands straight.</h5>
+      <div class="images">
+        <div class="link">
+          <a href="https://github.com/Mael-zys/T2M-GPT">T2M</a>
+        </div>
+        <div class="link">
+          <a href="https://guytevet.github.io/mdm-page/">MDM</a>
+        </div>
+        <div class="link">
+          <a href="https://github.com/EricGuo5513/momask-codes">MoMask</a>
+        </div>
+        <div class="link">
+          <a href="https://www.example.com">SATO</a>
+        </div>
+        <img src="./assets/compare3/3/after/gpt.gif" alt="">
+        <img src="./assets/compare3/3/after/mdm.gif" alt="">
+        <img src="./assets/compare3/3/after/momask.gif" alt="">
+        <img src="./assets/compare3/3/after/sato.gif" alt="">
+      </div>
+      <h4 style="color: hotpink; margin-top: -90px;">Explanation: T2M-GPT, MDM, and MoMask all took a step forward, without leaping.
+
+      </h4>
     </div>
 </body>
 
