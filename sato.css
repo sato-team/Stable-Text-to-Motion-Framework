@@ -48,13 +48,15 @@ body {
   margin-top: 20px;
 }
 .anchor a {
-  background: #f39c12;
+  /* background: #f39c12; */
+  background: #333;
   color: white;
   padding: 10px 20px;
   border: none;
-  border-radius: 5px;
+  border-radius: 50px;
   cursor: pointer;
-  box-shadow: 0 4px #d35400;
+  /* box-shadow: 0 4px #d35400; */
+  box-shadow: 0 4px #a54200;
 }
 
 .video {
