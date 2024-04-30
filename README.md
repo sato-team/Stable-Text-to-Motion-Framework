@@ -9,6 +9,50 @@
     <img src="assets/yt_solo.gif" width="45%">
 </div> -->
 
+<p align="center">
+<table align="center">
+  <tr>
+    <th colspan="4">Original text: Walking forward in an even pace.</th>
+  </tr>
+  <tr>
+    <th align="center"><u><a href="https://github.com/Mael-zys/T2M-GPT"><nobr>T2M-GPT</nobr> </a></u></th>
+    <th align="center"><u><a href="https://guytevet.github.io/mdm-page/"><nobr>MDM</nobr> </a></u></th>
+    <th align="center"><u><a href="https://github.com/EricGuo5513/momask-codes"><nobr>MoMask</nobr> </a></u></th>
+    <th align="center"><nobr>SATO</nobr> </th>
+  </tr>
+
+  <tr>
+    <td width="250" align="center"><img src="images/example/walk/gpt.gif" width="250px" height="250px" alt="gif"></td>
+    <td width="250" align="center"><img src="images/example/walk/mdm.gif" width="250px" height="250px" alt="gif"></td>
+    <td width="250" align="center"><img src="images/example/walk/momask.gif" width="250px" height="250px" alt="gif"></td>
+    <td width="250" align="center"><img src="images/example/walk/sato.gif" width="250px" height="250px" alt="gif"></td>
+  </tr>
+
+  <tr>
+    <th colspan="4" >Perturbed text: <span style="color: red;">Going ahead</span> in an even pace.</th>
+  </tr>
+  <tr>
+    <th align="center"><u><a href="https://github.com/Mael-zys/T2M-GPT"><nobr>T2M-GPT</nobr> </a></u></th>
+    <th align="center"><u><a href="https://guytevet.github.io/mdm-page/"><nobr>MDM</nobr> </a></u></th>
+    <th align="center"><u><a href="https://github.com/EricGuo5513/momask-codes"><nobr>MoMask</nobr> </a></u></th>
+    <th align="center"><nobr>SATO</nobr> </th>
+  </tr>
+
+  <tr>
+    <td width="250" align="center"><img src="images/example/go/gpt.gif" width="250px" height="250px" alt="gif"></td>
+    <td width="250" align="center"><img src="images/example/go/mdm.gif" width="250px" height="250px" alt="gif"></td>
+    <td width="250" align="center"><img src="images/example/go/momask.gif" width="250px" height="250px" alt="gif"></td>
+    <td width="250" align="center"><img src="images/example/go/sato.gif" width="250px" height="250px" alt="gif"></td>
+  </tr>
+</table>
+</p>
+<center>
+  <h3>
+    <p style="color: blue;">
+      Explanation: T2M-GPT lacks the action of moving forward, while MoMask's forward movement is uneven.</p>
+  </h3>
+</center>
+
 ## Table of Content
 
 * [1. Setup and Installation](#setup)
