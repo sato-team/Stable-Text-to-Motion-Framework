@@ -58,7 +58,7 @@ A quick reference guide for using our code is provided in quickstart.ipynb.
 ## Datasets<a name="datasets"></a>
 
 We are using two 3D human motion-language dataset: HumanML3D and KIT-ML. For both datasets, you could find the details as well as download [link](https://github.com/EricGuo5513/HumanML3D).
-We perturbed the input texts based on the two datasets mentioned. You can access the perturbed text dataset through the following [link]().
+We perturbed the input texts based on the two datasets mentioned. You can access the perturbed text dataset through the following [link](https://drive.google.com/file/d/1TZx-mDGeRXyuCsfuz8_oJhjiye6FWsTh/view?usp=sharing).
 
 ### **Train**<a name="train"></a>
 
@@ -66,7 +66,7 @@ We will release the training code soon.
 
 ### **Evaluation**<a name="eval"></a>
 
-You can download the pretrained models in this [link](https://drive.google.com/drive/folders/1RhK2gcQfILwKalRYnEqU58jRNsdqPAfq?usp=drive_link). 
+You can download the pretrained models in this [link](https://drive.google.com/drive/folders/1rs8QPJ3UPzLW4H3vWAAX9hJn4ln7m_ts?usp=sharing). 
 
 ```shell
 python eval_t2m.py --resume-pth pretrained/net_best_fid.pth --clip_path pretrained/clip_best_fid.pth
