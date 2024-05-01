@@ -19,31 +19,27 @@ A fundamental challenge inherent in text-to-motion tasks stems from the variabil
     <th align="center"><u><a href="https://github.com/Mael-zys/T2M-GPT"><nobr>T2M-GPT</nobr> </a></u></th>
     <th align="center"><u><a href="https://guytevet.github.io/mdm-page/"><nobr>MDM</nobr> </a></u></th>
     <th align="center"><u><a href="https://github.com/EricGuo5513/momask-codes"><nobr>MoMask</nobr> </a></u></th>
-    <th align="center"><u><a href="https://github.com/sato-team/Stable-Text-to-motion-Framework"><nobr>SATO</nobr> </a></u></th>
   </tr>
 
   <tr>
     <td width="250" align="center"><img src="images/example/kick/gpt.gif" width="150px" height="150px" alt="gif"></td>
     <td width="250" align="center"><img src="images/example/kick/mdm.gif" width="150px" height="150px" alt="gif"></td>
     <td width="250" align="center"><img src="images/example/kick/momask.gif" width="150px" height="150px" alt="gif"></td>
-    <td width="250" align="center"><img src="images/example/kick/sato.gif" width="150px" height="150px" alt="gif"></td>
   </tr>
 
   <tr>
-    <th colspan="4" >Perturbed text: A <span style="color: red;">human boots</span> something or someone with his left leg.</th>
+    <th colspan="4" >Perturbed text: A **human boots** something or someone with his left leg.</th>
   </tr>
   <tr>
     <th align="center"><u><a href="https://github.com/Mael-zys/T2M-GPT"><nobr>T2M-GPT</nobr> </a></u></th>
     <th align="center"><u><a href="https://guytevet.github.io/mdm-page/"><nobr>MDM</nobr> </a></u></th>
     <th align="center"><u><a href="https://github.com/EricGuo5513/momask-codes"><nobr>MoMask</nobr> </a></u></th>
-    <th align="center"><u><a href="https://github.com/sato-team/Stable-Text-to-motion-Framework"><nobr>SATO</nobr> </a></u></th>
   </tr>
 
   <tr>
     <td width="250" align="center"><img src="images/example/boot/gpt.gif" width="150px" height="150px" alt="gif"></td>
     <td width="250" align="center"><img src="images/example/boot/mdm.gif" width="150px" height="150px" alt="gif"></td>
     <td width="250" align="center"><img src="images/example/boot/momask.gif" width="150px" height="150px" alt="gif"></td>
-    <td width="250" align="center"><img src="images/example/boot/sato.gif" width="150px" height="150px" alt="gif"></td>
   </tr>
 </table>
 </p>
