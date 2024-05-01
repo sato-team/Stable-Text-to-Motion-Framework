@@ -64,8 +64,92 @@ The model's inconsistent outputs are accompanied by unstable attention patterns.
 
 * [6. Acknowledgments](#acknowledgements)
 
-  
+## Visualization
+<p align="center">
+<table align="center">
+  <tr>
+    <th colspan="4">Original text: person is walking normally in a circle.</th>
+  </tr>
+  <tr>
+    <th align="center"><u><a href="https://github.com/Mael-zys/T2M-GPT"><nobr>T2M-GPT</nobr> </a></u></th>
+    <th align="center"><u><a href="https://guytevet.github.io/mdm-page/"><nobr>MDM</nobr> </a></u></th>
+    <th align="center"><u><a href="https://github.com/EricGuo5513/momask-codes"><nobr>MoMask</nobr> </a></u></th>
+    <th align="center"><nobr>SATO</nobr> </th>
+  </tr>
 
+  <tr>
+    <td width="250" align="center"><img src="images/visualization/circle/gpt.gif" width="150px" height="150px" alt="gif"></td>
+    <td width="250" align="center"><img src="images/visualization/circle/mdm.gif" width="150px" height="150px" alt="gif"></td>
+    <td width="250" align="center"><img src="images/visualization/circle/momask.gif" width="150px" height="150px" alt="gif"></td>
+    <td width="250" align="center"><img src="images/visualization/circle/sato.gif" width="150px" height="150px" alt="gif"></td>
+  </tr>
+
+  <tr>
+    <th colspan="4" >Perturbed text: <span style="color: red;">human</span> is walking <span style="color: red;">usually</span> in a <span style="color: red;">loop.</th>
+  </tr>
+  <tr>
+    <th align="center"><u><a href="https://github.com/Mael-zys/T2M-GPT"><nobr>T2M-GPT</nobr> </a></u></th>
+    <th align="center"><u><a href="https://guytevet.github.io/mdm-page/"><nobr>MDM</nobr> </a></u></th>
+    <th align="center"><u><a href="https://github.com/EricGuo5513/momask-codes"><nobr>MoMask</nobr> </a></u></th>
+    <th align="center"><nobr>SATO</nobr> </th>
+  </tr>
+
+  <tr>
+    <td width="250" align="center"><img src="images/visualization/loop/gpt.gif" width="150px" height="150px" alt="gif"></td>
+    <td width="250" align="center"><img src="images/visualization/loop/mdm.gif" width="150px" height="150px" alt="gif"></td>
+    <td width="250" align="center"><img src="images/visualization/loop/momask.gif" width="150px" height="150px" alt="gif"></td>
+    <td width="250" align="center"><img src="images/visualization/loop/sato.gif" width="150px" height="150px" alt="gif"></td>
+  </tr>
+</table>
+</p>
+<center>
+  <h3>
+    <p style="color: blue;">Explanation: T2M-GPT, MDM, and MoMask all don't walk in a loop.</p>
+  </h3>
+
+<p align="center">
+<table align="center">
+  <tr>
+    <th colspan="4">Original text: a person uses his right arm to help himself to stand up.</th>
+  </tr>
+  <tr>
+    <th align="center"><u><a href="https://github.com/Mael-zys/T2M-GPT"><nobr>T2M-GPT</nobr> </a></u></th>
+    <th align="center"><u><a href="https://guytevet.github.io/mdm-page/"><nobr>MDM</nobr> </a></u></th>
+    <th align="center"><u><a href="https://github.com/EricGuo5513/momask-codes"><nobr>MoMask</nobr> </a></u></th>
+    <th align="center"><nobr>SATO</nobr> </th>
+  </tr>
+
+  <tr>
+    <td width="250" align="center"><img src="images/visualization/use/gpt.gif" width="150px" height="150px" alt="gif"></td>
+    <td width="250" align="center"><img src="images/visualization/use/mdm.gif" width="150px" height="150px" alt="gif"></td>
+    <td width="250" align="center"><img src="images/visualization/use/momask.gif" width="150px" height="150px" alt="gif"></td>
+    <td width="250" align="center"><img src="images/visualization/use/sato.gif" width="150px" height="150px" alt="gif"></td>
+  </tr>
+
+  <tr>
+    <th colspan="4" >Perturbed text: A human <span style="color: red;">utilizes</span> his right arm to help himself to stand up.</th>
+  </tr>
+  <tr>
+    <th align="center"><u><a href="https://github.com/Mael-zys/T2M-GPT"><nobr>T2M-GPT</nobr> </a></u></th>
+    <th align="center"><u><a href="https://guytevet.github.io/mdm-page/"><nobr>MDM</nobr> </a></u></th>
+    <th align="center"><u><a href="https://github.com/EricGuo5513/momask-codes"><nobr>MoMask</nobr> </a></u></th>
+    <th align="center"><nobr>SATO</nobr> </th>
+  </tr>
+
+  <tr>
+    <td width="250" align="center"><img src="images/visualization/utilize/gpt.gif" width="150px" height="150px" alt="gif"></td>
+    <td width="250" align="center"><img src="images/visualization/utilize/mdm.gif" width="150px" height="150px" alt="gif"></td>
+    <td width="250" align="center"><img src="images/visualization/utilize/momask.gif" width="150px" height="150px" alt="gif"></td>
+    <td width="250" align="center"><img src="images/visualization/utilize/sato.gif" width="150px" height="150px" alt="gif"></td>
+  </tr>
+</table>
+</p>
+<center>
+  <h3>
+    <p style="color: blue;">Explanation: T2M-GPT, MDM, and MoMask all lack the action of transitioning from squatting to standing up, resulting in a catastrophic error.</p>
+  </h3>
+
+    
 ## Setup and Installation <a name="setup"></a>
 
 Clone the repository: 
