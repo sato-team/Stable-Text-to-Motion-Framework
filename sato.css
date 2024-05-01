@@ -286,3 +286,24 @@ a {
     width: 40%;
   }
 }
+
+.twoMan {
+  margin-top: -50px;
+  padding-top: -50px;
+  display: inline-flex;
+  flex-direction: column;
+  /* flex-direction: row; */
+}
+
+@media only screen and (max-width: 768px) {
+  .challengeImage {
+    margin-top: 40px;
+    width: 200px !important;
+    height: 100px !important;
+  }
+  .twoMan video {
+    margin-top: 60px;
+    width: 50px;
+    height: 50px;
+  }
+}
