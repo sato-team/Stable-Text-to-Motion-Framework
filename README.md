@@ -4,7 +4,7 @@
 
 [![Website shields.io](https://img.shields.io/website?url=http%3A//poco.is.tue.mpg.de)](https://sato-team.github.io/Stable-Text-to-Motion-Framework/) [![YouTube Badge](https://img.shields.io/badge/YouTube-Watch-red?style=flat-square&logo=youtube)]()  [![arXiv](https://img.shields.io/badge/arXiv-2308.12965-00ff00.svg)]()  
 ## Existing Challenges
-A fundamental challenge inherent in text-to-motion tasks stems from the variability of textual inputs. Even when conveying similar or the same meanings and intentions, texts can exhibit considerable variations in vocabulary and structure due to individual user preferences or linguistic nuances. Despite the considerable advancements made in these models, we find a notable weakness: all of them demonstrate instability in prediction when encountering minor textual perturbations, such as synonym substitutions.
+A fundamental challenge inherent in text-to-motion tasks stems from the variability of textual inputs. Even when conveying similar or the same meanings and intentions, texts can exhibit considerable variations in vocabulary and structure due to individual user preferences or linguistic nuances. Despite the considerable advancements made in these models, we find a notable weakness: all of them demonstrate instability in prediction when encountering minor textual perturbations, such as synonym substitutions. In the following, we demonstrate the instability of predictions for different user inputs with the same semantic meaning.
 <!-- <div style="display:flex;">
     <img src="assets/run_lola.gif" width="45%" style="margin-right: 1%;">
     <img src="assets/yt_solo.gif" width="45%">
@@ -13,7 +13,7 @@ A fundamental challenge inherent in text-to-motion tasks stems from the variabil
 <p align="center">
 <table align="center">
   <tr>
-    <th colspan="4">Original text: a man kicks something or someone with his left leg.</th>
+    <th colspan="4">Original text: A man kicks something or someone with his left leg.</th>
   </tr>
   <tr>
     <th align="center"><u><a href="https://github.com/Mael-zys/T2M-GPT"><nobr>T2M-GPT</nobr> </a></u></th>
@@ -30,7 +30,7 @@ A fundamental challenge inherent in text-to-motion tasks stems from the variabil
   </tr>
 
   <tr>
-    <th colspan="4" >Perturbed text: a human <span style="color: red;">boots</span> something or someone with his left leg.</th>
+    <th colspan="4" >Perturbed text: A <span style="color: red;">human boots</span> something or someone with his left leg.</th>
   </tr>
   <tr>
     <th align="center"><u><a href="https://github.com/Mael-zys/T2M-GPT"><nobr>T2M-GPT</nobr> </a></u></th>
@@ -50,7 +50,7 @@ A fundamental challenge inherent in text-to-motion tasks stems from the variabil
 
 ## Motivation
 ![motivation](images/motivation.png)
-The model's inconsistent outputs are accompanied by unstable attention patterns.We further elucidate the aforementioned experimental findings: When perturbed text is inputted, the model exhibits unstable attention, often neglecting critical text elements necessary for accurate motion prediction. This instability further complicates the encoding of text into consistent embeddings, leading to a cascade of consecutive temporal motion generation errors.
+The model's inconsistent outputs are accompanied by unstable attention patterns. We further elucidate the aforementioned experimental findings: When perturbed text is inputted, the model exhibits unstable attention, often neglecting critical text elements necessary for accurate motion prediction. This instability further complicates the encoding of text into consistent embeddings, leading to a cascade of consecutive temporal motion generation errors.
 
 ## Table of Content
 
