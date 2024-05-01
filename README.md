@@ -49,6 +49,7 @@ A fundamental challenge inherent in text-to-motion tasks stems from the variabil
 The model's inconsistent outputs are accompanied by unstable attention patterns. We further elucidate the aforementioned experimental findings: When perturbed text is inputted, the model exhibits unstable attention, often neglecting critical text elements necessary for accurate motion prediction. This instability further complicates the encoding of text into consistent embeddings, leading to a cascade of consecutive temporal motion generation errors.
 ## Our Approach
 ![approach](images/framework.png)
+
 **Attention Stability**. For the original text input, we can easily observe the model's attention vector for the text. This attention vector reflects the model's attentional ranking of the text, indicating the importance of each word to the text encoder's prediction. We hope a stable attention vector maintains a consistent ranking even after perturbations.
 
 **Prediction Robustness**. Even with stable attention, we still cannot achieve stable results due to the change in text embeddings when facing perturbations, even with similar attention vectors. This requires us to impose further restrictions on the model's predictions. Specifically, in the face of perturbations, the model's prediction should remain consistent with the original distribution, meaning the model's output should be robust to perturbations.
