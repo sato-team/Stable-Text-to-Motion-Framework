@@ -48,21 +48,6 @@ A fundamental challenge inherent in text-to-motion tasks stems from the variabil
 ![motivation](images/motivation.png)
 The model's inconsistent outputs are accompanied by unstable attention patterns. We further elucidate the aforementioned experimental findings: When perturbed text is inputted, the model exhibits unstable attention, often neglecting critical text elements necessary for accurate motion prediction. This instability further complicates the encoding of text into consistent embeddings, leading to a cascade of consecutive temporal motion generation errors.
 
-## How to Use the Code
-
-* [1. Setup and Installation](#setup)
-
-* [2.Dependencies](#Dependencies)
-
-* [3. Quick Start](#quickstart)
-
-* [4. Datasets](#datasets)
-
-* [4. Train](#train)
-
-* [5. Evaluation](#eval)
-
-* [6. Acknowledgments](#acknowledgements)
 
 ## Visualization
 <p align="center">
@@ -148,6 +133,23 @@ The model's inconsistent outputs are accompanied by unstable attention patterns.
   <h3>
     <p style="color: blue;">Explanation: T2M-GPT, MDM, and MoMask all lack the action of transitioning from squatting to standing up, resulting in a catastrophic error.</p>
   </h3>
+
+    
+## How to Use the Code
+
+* [1. Setup and Installation](#setup)
+
+* [2.Dependencies](#Dependencies)
+
+* [3. Quick Start](#quickstart)
+
+* [4. Datasets](#datasets)
+
+* [4. Train](#train)
+
+* [5. Evaluation](#eval)
+
+* [6. Acknowledgments](#acknowledgements)
 
     
 ## Setup and Installation <a name="setup"></a>
