@@ -127,10 +127,10 @@ python eval_t2m.py --resume-pth pretrained/net_best_fid.pth --clip_path pretrain
 
 We appreciate helps from :
 
-- Open Source Code：[T2M-GPT](https://github.com/Mael-zys/T2M-GPT), [MoMask ](https://github.com/EricGuo5513/momask-codes)etc.
+- Open Source Code：[T2M-GPT](https://github.com/Mael-zys/T2M-GPT), [MoMask ](https://github.com/EricGuo5513/momask-codes), [MDM](https://guytevet.github.io/mdm-page/), etc.
 - [Hongru Xiao](https://github.com/Hongru0306), [Erhang Zhang](https://github.com/zhangerhang), [Lijie Hu](https://sites.google.com/view/lijiehu/homepage), [Lei Wang](https://leiwangr.github.io/), [Mengyuan Liu](), [Chen Chen](https://www.crcv.ucf.edu/chenchen/) for discussions and guidance throughout the project, which has been instrumental to our work.
 - [Zhen Zhao](https://github.com/Zanebla) for project website.
-
+- If you find our work helpful, we would appreciate it if you could give our project a star!
 ## Citing<a name="citing"></a>
 
 If you find this code useful for your research, please consider citing the following paper:
