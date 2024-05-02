@@ -28,7 +28,8 @@ A fundamental challenge inherent in text-to-motion tasks stems from the variabil
   </tr>
 
   <tr>
-    <th colspan="4" >Perturbed text: A human boots something or someone with his left leg.</th>
+   <th colspan="4">Perturbed text: A human boots something or someone with his left leg.</th>
+
   </tr>
   <tr>
     <th align="center"><u><a href="https://github.com/Mael-zys/T2M-GPT"><nobr>T2M-GPT</nobr> </a></u></th>
