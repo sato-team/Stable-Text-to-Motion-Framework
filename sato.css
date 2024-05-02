@@ -71,11 +71,23 @@ a {
 }
 
 .video {
+  display: flex;
   margin-top: 20px; /* 调整视频部分与上方元素的间距 */
 }
 
-.video video {
-  width: 100%; /* 视频宽度充满父容器 */
+.video iframe {
+  margin: 0 auto;
+  width: 80%; /* 视频宽度充满父容器 */
+  height: 500px;
+}
+
+@media only screen and (max-width: 768px) {
+  .video iframe {
+    margin: 0 auto;
+    width: 100%; /* 视频宽度充满父容器 */
+    height: 200px;
+    object-fit: cover;
+  }
 }
 
 .existingChallenges .challenge img {

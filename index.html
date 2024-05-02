@@ -6,6 +6,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>SATO: Stable Text-to-Motion Framework</title>
   <link rel="stylesheet" type="text/css" href="sato.css">
+  <script src="https://www.youtube.com/iframe_api"></script>
+  <script src="video.js"></script>
 </head>
 
 <!-- [Wenshuo chen](https://github.com/shurdy123), [Hongru Xiao](https://github.com/Hongru0306), [Lijie Hu](https://sites.google.com/view/lijiehu/homepage), [Lei Wang](), [Mengyuan Liu](https://leiwangr.github.io/), [Chen Chen](https://www.crcv.ucf.edu/chenchen/) -->
@@ -32,6 +34,9 @@
       <button
         onclick="window.open('https://drive.google.com/file/d/1XLvu2jfG1YKyujdANhYHV_NfFTyOJPvP/view?usp=sharing')"><img
           src="./assets/data.png" alt="" width="16px" style="margin-bottom: -3px;"> Dataset</button>
+      <button
+        onclick="window.open('https://huggingface.co/spaces/chencws/stable-text-to-motion-framework/tree/main')"><img
+          src="./assets/huggingface.png" alt="" width="16px" style="margin-bottom: -3px;"> Huggingface</button>
     </div>
     <div class="anchor">
       <a href="#video"">Video</a>
@@ -47,11 +52,19 @@
   <div class="video">
     <!-- <iframe width="560" height="315" src="https://www.youtube.com/embed/VIDEO_ID" frameborder="0"
       allowfullscreen></iframe> -->
-    <video width="900" height="600" controls>
+    <!-- <video width="900" height="600" controls>
       <source src="./video/sato.mp4" type="video/mp4">
       Your browser does not support the video tag.
-    </video>
+    </video> -->
+    <!-- <iframe width="560" height="315"
+      src="https://www.bilibili.com/video/BV1mw4m127zq/?spm_id_from=333.1007.tianma.1-1-1.click" frameborder="0"
+      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+      allowfullscreen></iframe> -->
+    <!-- <iframe width="560" height="315" src="https://www.youtube.com/watch?v=-K1W-mcaeFE" frameborder="0"
+      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+      allowfullscreen></iframe> -->
     <!-- <p style="text-align: center;">We recommend watching the video with sound on</p> -->
+    <div id="player"></div>
   </div>
 
   <a name="abstract"></a>
@@ -144,6 +157,7 @@
       <div class="motivation-left">
         <img src="./assets/motivation-left.jpg" alt="">
         <p>JSD measures the difference between vectors, the smaller the better.</p>
+        <p>The intensity of the color represents the magnitude of attention weight.</p>
       </div>
       <div class="motivation-right">
         <img src="./assets/motivation_right.jpg" alt="">
