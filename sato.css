@@ -319,3 +319,17 @@ a {
     height: 50px;
   }
 }
+
+@media only screen and (max-width: 768px) {
+  /* .linkButton {
+    display: gird;
+    grid-template-rows: auto auto;
+    grid-template-columns: auto auto; 
+    grid-gap: 10px; 
+  } */
+
+  .linkButton button {
+    margin-right: 20px;
+    margin-top: 14px;
+  }
+}
