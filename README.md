@@ -234,6 +234,13 @@ We appreciate helps from :
 If you find this code useful for your research, please consider citing the following paper:
 
 ```bibtex
-
+@misc{chen2024sato,
+      title={SATO: Stable Text-to-Motion Framework}, 
+      author={Wenshuo Chen and Hongru Xiao and Erhang Zhang and Lijie Hu and Lei Wang and Mengyuan Liu and Chen Chen},
+      year={2024},
+      eprint={2405.01461},
+      archivePrefix={arXiv},
+      primaryClass={cs.CV}
+}
 ```
 
