@@ -86,7 +86,7 @@ trans_encoder.cuda()
 print('checkpoints loading successfully')
 
 fid = []
-fid_per=[]
+fid_d=[]
 div = []
 top1 = []
 top2 = []
@@ -94,14 +94,14 @@ top3 = []
 matching = []
 multi = []
 repeat_time = 20
-fid_word_perb=[]
+fid_p=[]
         
 for i in range(repeat_time):
     print('repeat_time: ',i)
-    best_fid,best_fid_word_perb,best_fid_per, best_iter, best_div, best_top1, best_top2, best_top3, best_matching, best_multi, writer, logger = eval_trans.evaluation_transformer_test(args.out_dir, val_loader, net, trans_encoder, logger, writer, 0, best_fid=1000,best_fid_word_perb=1000,best_fid_perturbation=1000, best_iter=0, best_div=100, best_top1=0, best_top2=0, best_top3=0, best_matching=100, best_multi=0, clip_model=clip_model, eval_wrapper=eval_wrapper, draw=False, savegif=False, save=False, savenpy=(i==0))
+    best_fid,best_fid_p,best_fid_d, best_iter, best_div, best_top1, best_top2, best_top3, best_matching, best_multi, writer, logger = eval_trans.evaluation_transformer_test(args.out_dir, val_loader, net, trans_encoder, logger, writer, 0, best_fid=1000,best_fid_p=1000,best_fid_dturbation=1000, best_iter=0, best_div=100, best_top1=0, best_top2=0, best_top3=0, best_matching=100, best_multi=0, clip_model=clip_model, eval_wrapper=eval_wrapper, draw=False, savegif=False, save=False, savenpy=(i==0))
     fid.append(best_fid)
-    fid_word_perb.append(best_fid_word_perb)
-    fid_per.append(best_fid_per)
+    fid_p.append(best_fid_p)
+    fid_d.append(best_fid_d)
     div.append(best_div)
     top1.append(best_top1)
     top2.append(best_top2)
@@ -110,7 +110,7 @@ for i in range(repeat_time):
     multi.append(best_multi)
 
     # print('fid: ', sum(fid)/(i+1))
-    # print('fid_per',sum(fid_per)/(i+1))
+    # print('fid_d',sum(fid_d)/(i+1))
     # print('div: ', sum(div)/(i+1))
     # print('top1: ', sum(top1)/(i+1))
     # print('top2: ', sum(top2)/(i+1))
@@ -121,8 +121,8 @@ for i in range(repeat_time):
 
 print('final result:')
 print('fid: ', sum(fid)/repeat_time)
-print('fid_word_perb',sum(fid_word_perb)/repeat_time)
-print('fid_per',sum(fid_per)/repeat_time)
+print('fid_p',sum(fid_p)/repeat_time)
+print('fid_d',sum(fid_d)/repeat_time)
 print('div: ', sum(div)/repeat_time)
 print('top1: ', sum(top1)/repeat_time)
 print('top2: ', sum(top2)/repeat_time)
@@ -131,14 +131,14 @@ print('matching: ', sum(matching)/repeat_time)
 # print('multi: ', sum(multi)/repeat_time)
 
 fid = np.array(fid)
-fid_word_perb=np.array(fid_word_perb)
-fid_per=np.array(fid_per)
+fid_p=np.array(fid_p)
+fid_d=np.array(fid_d)
 div = np.array(div)
 top1 = np.array(top1)
 top2 = np.array(top2)
 top3 = np.array(top3)
 matching = np.array(matching)
 # multi = np.array(multi)
-# msg_final = f"FID. {np.mean(fid):.3f}, FID_PERB.{np.mean(fid_per):.3f}conf. {np.std(fid)*1.96/np.sqrt(repeat_time):.3f}, Diversity. {np.mean(div):.3f}, conf. {np.std(div)*1.96/np.sqrt(repeat_time):.3f}, TOP1. {np.mean(top1):.3f}, conf. {np.std(top1)*1.96/np.sqrt(repeat_time):.3f}, TOP2. {np.mean(top2):.3f}, conf. {np.std(top2)*1.96/np.sqrt(repeat_time):.3f}, TOP3. {np.mean(top3):.3f}, conf. {np.std(top3)*1.96/np.sqrt(repeat_time):.3f}, Matching. {np.mean(matching):.3f}, conf. {np.std(matching)*1.96/np.sqrt(repeat_time):.3f}, Multi. {np.mean(multi):.3f}, conf. {np.std(multi)*1.96/np.sqrt(repeat_time):.3f}"
-msg_final = f"FID. {np.mean(fid):.3f}, {np.std(fid)*1.96/np.sqrt(repeat_time):.3f}, FID_word_perb.{np.mean(fid_word_perb):.3f}, {np.std(fid_word_perb)*1.96/np.sqrt(repeat_time):.3f},FID_PERB.{np.mean(fid_per):.3f}, conf. {np.std(fid)*1.96/np.sqrt(repeat_time):.3f}, Diversity. {np.mean(div):.3f}, conf. {np.std(div)*1.96/np.sqrt(repeat_time):.3f}, TOP1. {np.mean(top1):.3f}, conf. {np.std(top1)*1.96/np.sqrt(repeat_time):.3f}, TOP2. {np.mean(top2):.3f}, conf. {np.std(top2)*1.96/np.sqrt(repeat_time):.3f}, TOP3. {np.mean(top3):.3f}, conf. {np.std(top3)*1.96/np.sqrt(repeat_time):.3f}, Matching. {np.mean(matching):.3f}, conf. {np.std(matching)*1.96/np.sqrt(repeat_time):.3f}, conf. {np.std(multi)*1.96/np.sqrt(repeat_time):.3f}"
+
+msg_final = f"FID. {np.mean(fid):.3f}, {np.std(fid)*1.96/np.sqrt(repeat_time):.3f}, fid_p.{np.mean(fid_p):.3f}, {np.std(fid_p)*1.96/np.sqrt(repeat_time):.3f},fid_d.{np.mean(fid_d):.3f}, conf. {np.std(fid)*1.96/np.sqrt(repeat_time):.3f}, Diversity. {np.mean(div):.3f}, conf. {np.std(div)*1.96/np.sqrt(repeat_time):.3f}, TOP1. {np.mean(top1):.3f}, conf. {np.std(top1)*1.96/np.sqrt(repeat_time):.3f}, TOP2. {np.mean(top2):.3f}, conf. {np.std(top2)*1.96/np.sqrt(repeat_time):.3f}, TOP3. {np.mean(top3):.3f}, conf. {np.std(top3)*1.96/np.sqrt(repeat_time):.3f}, Matching. {np.mean(matching):.3f}, conf. {np.std(matching)*1.96/np.sqrt(repeat_time):.3f}, conf. {np.std(multi)*1.96/np.sqrt(repeat_time):.3f}"
 logger.info(msg_final)
