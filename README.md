@@ -218,7 +218,7 @@ We will release the training code soon.
 You can download the pretrained models in this [link](https://drive.google.com/drive/folders/1rs8QPJ3UPzLW4H3vWAAX9hJn4ln7m_ts?usp=sharing). 
 
 ```shell
-python eval_t2m.py --resume-pth pretrained/net_best_fid.pth --clip_path pretrained/clip_best_fid.pth
+python eval_t2m.py -- resume-pth pretrained/vq_best.pth --resume-trans pretrained/net_best_fid.pth --clip_path pretrained/clip_best.pth
 ```
 
 ## Acknowledgements<a name="acknowledgements"></a>
