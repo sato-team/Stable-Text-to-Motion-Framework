@@ -167,10 +167,10 @@ def evaluation_vqvae(out_dir, val_loader, net, logger, writer, nb_iter, best_fid
 
 
 @torch.no_grad()        
-def evaluation_transformer(out_dir, val_loader, net, trans, logger, writer, nb_iter, best_fid, best_fid_syn,best_fid_perturbation,best_iter, best_div, best_top1, best_top2, best_top3, best_matching, clip_model, eval_wrapper, draw = True, save = True, savegif=False,PGD=None,crit=None) : 
+def evaluation_transformer(out_dir, val_loader, net, trans, logger, writer, nb_iter, best_fid, best_fid_p,best_fid_d,best_iter, best_div, best_top1, best_top2, best_top3, best_matching, clip_model, eval_wrapper, draw = True, save = True, savegif=False,PGD=None,crit=None) : 
 
     trans.eval()
-    #这里是不是应该clip也eval()
+    
     nb_sample = 0
     
     draw_org = []
@@ -282,17 +282,17 @@ def evaluation_transformer(out_dir, val_loader, net, trans, logger, writer, nb_i
 
 
     fid = calculate_frechet_distance(gt_mu, gt_cov, mu, cov)
-    fid_syn = calculate_frechet_distance(gt_mu,gt_cov,mu_per,cov_per)
-    fid_perturbation = calculate_frechet_distance(mu_per, cov_per, mu, cov)
+    fid_p = calculate_frechet_distance(gt_mu,gt_cov,mu_per,cov_per)
+    fid_d = calculate_frechet_distance(mu_per, cov_per, mu, cov)
 
-    msg = f"--> \t Eva. Iter {nb_iter} :, FID. {fid:.4f},FID_syn{fid_syn:.5f},FID_perturbation_and_origin.{fid_perturbation:.5f} Diversity Real. {diversity_real:.4f}, Diversity. {diversity:.4f}, R_precision_real. {R_precision_real}, R_precision. {R_precision}, matching_score_real. {matching_score_real}, matching_score_pred. {matching_score_pred}"
+    msg = f"--> \t Eva. Iter {nb_iter} :, FID. {fid:.4f},fid_p{fid_p:.5f},FID_d.{fid_perturbation:.5f} Diversity Real. {diversity_real:.4f}, Diversity. {diversity:.4f}, R_precision_real. {R_precision_real}, R_precision. {R_precision}, matching_score_real. {matching_score_real}, matching_score_pred. {matching_score_pred}"
     logger.info(msg)
     
     
     if draw:
         writer.add_scalar('./Test/FID', fid, nb_iter)
-        writer.add_scalar('./Test/FID_perturbation_and_origin', fid_perturbation, nb_iter)
-        writer.add_scalar('./Test/FID_syn', fid_syn, nb_iter)
+        writer.add_scalar('./Test/FID_d', fid_perturbation, nb_iter)
+        writer.add_scalar('./Test/fid_p', fid_p, nb_iter)
         writer.add_scalar('./Test/Diversity', diversity, nb_iter)
         writer.add_scalar('./Test/top1', R_precision[0], nb_iter)
         writer.add_scalar('./Test/top2', R_precision[1], nb_iter)
@@ -310,8 +310,8 @@ def evaluation_transformer(out_dir, val_loader, net, trans, logger, writer, nb_i
 
     if isinstance(best_fid, tuple):
         best_fid=best_fid[0]
-    if isinstance(best_fid_perturbation, tuple):
-        best_fid_perturbation=best_fid_perturbation[0]
+    if isinstance(best_fid_d, tuple):
+        best_fid_d=best_fid_d[0]
     if fid < best_fid : 
         msg = f"--> --> \t FID Improved from {best_fid:.5f} to {fid:.5f} !!!"
         logger.info(msg)
@@ -322,15 +322,15 @@ def evaluation_transformer(out_dir, val_loader, net, trans, logger, writer, nb_i
             torch.save({'trans' : trans.state_dict()}, os.path.join(out_dir, 'net_best_fid.pth'))
             msg = f"--> --> \t Current FID is {fid:.5f} !!!"
             logger.info(msg)
-    if fid_syn < best_fid_syn:
-        msg = f"--> --> \t FID_syn {best_fid_syn:.5f} to {fid_syn:.5f} !!!"
+    if fid_p < best_fid_p:
+        msg = f"--> --> \t fid_p {best_fid_p:.5f} to {fid_p:.5f} !!!"
         logger.info(msg)
-        best_fid_syn = fid_syn
+        best_fid_p = fid_p
 
-    if fid_perturbation < best_fid_perturbation : 
-        msg = f"--> --> \t FID_perturbation_and_origin {best_fid_perturbation:.5f} to {fid_perturbation:.5f} !!!"
+    if fid_d < best_fid_d : 
+        msg = f"--> --> \t FID_d {best_fid_d:.5f} to {fid_d:.5f} !!!"
         logger.info(msg)
-        best_fid_perturbation = fid_perturbation
+        best_fid_d = fid_d
        
     if matching_score_pred < best_matching : 
         msg = f"--> --> \t matching_score Improved from {best_matching:.5f} to {matching_score_pred:.5f} !!!"
@@ -363,7 +363,7 @@ def evaluation_transformer(out_dir, val_loader, net, trans, logger, writer, nb_i
         torch.save({'trans' : trans.state_dict()}, os.path.join(out_dir, 'net_last.pth'))
 
     trans.train()
-    return best_fid, best_fid_syn, best_fid_perturbation, best_iter, best_div, best_top1, best_top2, best_top3, best_matching, writer, logger
+    return best_fid, best_fid_p, best_fid_perturbation, best_iter, best_div, best_top1, best_top2, best_top3, best_matching, writer, logger
 
 
 @torch.no_grad()        
@@ -509,7 +509,7 @@ def evaluation_transformer_test(out_dir, val_loader, net, trans, logger, writer,
         fid_word_perb = calculate_frechet_distance(gt_mu,gt_cov,mu_per,cov_per)
     except:
         print('数据有问题！！')
-    msg = f"--> \t Eva. Iter {nb_iter} :, FID. {fid:.4f}, FID_syn. {fid_word_perb:.5f}, FID_Perturbation. {fid_perturbation:.4f}, Diversity Real. {diversity_real:.4f}, Diversity. {diversity:.4f}, R_precision_real. {R_precision_real}, R_precision. {R_precision}, matching_score_real. {matching_score_real}, matching_score_pred. {matching_score_pred}, multimodality. {multimodality:.4f}"
+    msg = f"--> \t Eva. Iter {nb_iter} :, FID. {fid:.4f}, fid_p. {fid_word_perb:.5f}, FID_Perturbation. {fid_perturbation:.4f}, Diversity Real. {diversity_real:.4f}, Diversity. {diversity:.4f}, R_precision_real. {R_precision_real}, R_precision. {R_precision}, matching_score_real. {matching_score_real}, matching_score_pred. {matching_score_pred}, multimodality. {multimodality:.4f}"
     logger.info(msg)
     
     
