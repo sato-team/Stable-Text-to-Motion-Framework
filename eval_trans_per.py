@@ -285,13 +285,13 @@ def evaluation_transformer(out_dir, val_loader, net, trans, logger, writer, nb_i
     fid_p = calculate_frechet_distance(gt_mu,gt_cov,mu_per,cov_per)
     fid_d = calculate_frechet_distance(mu_per, cov_per, mu, cov)
 
-    msg = f"--> \t Eva. Iter {nb_iter} :, FID. {fid:.4f},fid_p{fid_p:.5f},FID_d.{fid_perturbation:.5f} Diversity Real. {diversity_real:.4f}, Diversity. {diversity:.4f}, R_precision_real. {R_precision_real}, R_precision. {R_precision}, matching_score_real. {matching_score_real}, matching_score_pred. {matching_score_pred}"
+    msg = f"--> \t Eva. Iter {nb_iter} :, FID. {fid:.4f},fid_p{fid_p:.5f},FID_d.{fid_p:.5f} Diversity Real. {diversity_real:.4f}, Diversity. {diversity:.4f}, R_precision_real. {R_precision_real}, R_precision. {R_precision}, matching_score_real. {matching_score_real}, matching_score_pred. {matching_score_pred}"
     logger.info(msg)
     
     
     if draw:
         writer.add_scalar('./Test/FID', fid, nb_iter)
-        writer.add_scalar('./Test/FID_d', fid_perturbation, nb_iter)
+        writer.add_scalar('./Test/FID_d', fid_p, nb_iter)
         writer.add_scalar('./Test/fid_p', fid_p, nb_iter)
         writer.add_scalar('./Test/Diversity', diversity, nb_iter)
         writer.add_scalar('./Test/top1', R_precision[0], nb_iter)
@@ -363,11 +363,11 @@ def evaluation_transformer(out_dir, val_loader, net, trans, logger, writer, nb_i
         torch.save({'trans' : trans.state_dict()}, os.path.join(out_dir, 'net_last.pth'))
 
     trans.train()
-    return best_fid, best_fid_p, best_fid_perturbation, best_iter, best_div, best_top1, best_top2, best_top3, best_matching, writer, logger
+    return best_fid, best_fid_p, best_fid_p, best_iter, best_div, best_top1, best_top2, best_top3, best_matching, writer, logger
 
 
 @torch.no_grad()        
-def evaluation_transformer_test(out_dir, val_loader, net, trans, logger, writer, nb_iter, best_fid,best_fid_word_perb,best_fid_perturbation, best_iter, best_div, best_top1, best_top2, best_top3, best_matching, best_multi, clip_model, eval_wrapper, draw = True, save = True, savegif=False, savenpy=False) : 
+def evaluation_transformer_test(out_dir, val_loader, net, trans, logger, writer, nb_iter, best_fid,best_fid_p,best_fid_d, best_iter, best_div, best_top1, best_top2, best_top3, best_matching, best_multi, clip_model, eval_wrapper, draw = True, save = True, savegif=False, savenpy=False) : 
 
     trans.eval()
     nb_sample = 0
@@ -505,11 +505,12 @@ def evaluation_transformer_test(out_dir, val_loader, net, trans, logger, writer,
     # multimodality = calculate_multimodality(motion_multimodality, 10)
     try:
         fid = calculate_frechet_distance(gt_mu, gt_cov, mu, cov)
-        fid_perturbation = calculate_frechet_distance(mu_per, cov_per, mu, cov)
-        fid_word_perb = calculate_frechet_distance(gt_mu,gt_cov,mu_per,cov_per)
+        fid_p = calculate_frechet_distance(gt_mu,gt_cov,mu_per,cov_per)
+        fid_d = calculate_frechet_distance(mu_per, cov_per, mu, cov)
+        
     except:
-        print('数据有问题！！')
-    msg = f"--> \t Eva. Iter {nb_iter} :, FID. {fid:.4f}, fid_p. {fid_word_perb:.5f}, FID_Perturbation. {fid_perturbation:.4f}, Diversity Real. {diversity_real:.4f}, Diversity. {diversity:.4f}, R_precision_real. {R_precision_real}, R_precision. {R_precision}, matching_score_real. {matching_score_real}, matching_score_pred. {matching_score_pred}, multimodality. {multimodality:.4f}"
+        print('error')
+    msg = f"--> \t Eva. Iter {nb_iter} :, FID. {fid:.4f}, fid_p. {fid_p:.5f}, fid_d. {fid_d:.4f}, Diversity Real. {diversity_real:.4f}, Diversity. {diversity:.4f}, R_precision_real. {R_precision_real}, R_precision. {R_precision}, matching_score_real. {matching_score_real}, matching_score_pred. {matching_score_pred}, multimodality. {multimodality:.4f}"
     logger.info(msg)
     
     
@@ -520,7 +521,7 @@ def evaluation_transformer_test(out_dir, val_loader, net, trans, logger, writer,
             tensorborad_add_video_xyz(writer, draw_pred[ii], nb_iter, tag='./Vis/'+draw_name[ii]+'_pred', nb_vis=1, title_batch=[draw_text_pred[ii]], outname=[os.path.join(out_dir, draw_name[ii]+'_skel_pred.gif')] if savegif else None)
 
     trans.train()
-    return fid,fid_word_perb,fid_perturbation, best_iter, diversity, R_precision[0], R_precision[1], R_precision[2], matching_score_pred, multimodality, writer, logger
+    return fid,fid_p,fid_d, best_iter, diversity, R_precision[0], R_precision[1], R_precision[2], matching_score_pred, multimodality, writer, logger
 
 # (X - X_train)*(X - X_train) = -2X*X_train + X*X + X_train*X_train
 def euclidean_distance_matrix(matrix1, matrix2):
