@@ -109,15 +109,6 @@ for i in range(repeat_time):
     matching.append(best_matching)
     multi.append(best_multi)
 
-    # print('fid: ', sum(fid)/(i+1))
-    # print('fid_d',sum(fid_d)/(i+1))
-    # print('div: ', sum(div)/(i+1))
-    # print('top1: ', sum(top1)/(i+1))
-    # print('top2: ', sum(top2)/(i+1))
-    # print('top3: ', sum(top3)/(i+1))
-    # print('matching: ', sum(matching)/(i+1))
-    # print('multi: ', sum(multi)/(i+1))
-
 
 print('final result:')
 print('fid: ', sum(fid)/repeat_time)
@@ -128,7 +119,7 @@ print('top1: ', sum(top1)/repeat_time)
 print('top2: ', sum(top2)/repeat_time)
 print('top3: ', sum(top3)/repeat_time)
 print('matching: ', sum(matching)/repeat_time)
-# print('multi: ', sum(multi)/repeat_time)
+
 
 fid = np.array(fid)
 fid_p=np.array(fid_p)
@@ -138,7 +129,6 @@ top1 = np.array(top1)
 top2 = np.array(top2)
 top3 = np.array(top3)
 matching = np.array(matching)
-# multi = np.array(multi)
 
 msg_final = f"FID. {np.mean(fid):.3f}, {np.std(fid)*1.96/np.sqrt(repeat_time):.3f}, fid_p.{np.mean(fid_p):.3f}, {np.std(fid_p)*1.96/np.sqrt(repeat_time):.3f},fid_d.{np.mean(fid_d):.3f}, conf. {np.std(fid)*1.96/np.sqrt(repeat_time):.3f}, Diversity. {np.mean(div):.3f}, conf. {np.std(div)*1.96/np.sqrt(repeat_time):.3f}, TOP1. {np.mean(top1):.3f}, conf. {np.std(top1)*1.96/np.sqrt(repeat_time):.3f}, TOP2. {np.mean(top2):.3f}, conf. {np.std(top2)*1.96/np.sqrt(repeat_time):.3f}, TOP3. {np.mean(top3):.3f}, conf. {np.std(top3)*1.96/np.sqrt(repeat_time):.3f}, Matching. {np.mean(matching):.3f}, conf. {np.std(matching)*1.96/np.sqrt(repeat_time):.3f}, conf. {np.std(multi)*1.96/np.sqrt(repeat_time):.3f}"
 logger.info(msg_final)
