@@ -1,654 +1,134 @@
-import os
-
-# import clip
-from CLIP.clip import clip
-import numpy as np
+import os 
 import torch
-from scipy import linalg
-from tqdm import tqdm
-import visualization.plot_3d_global as plot_3d
-from utils.motion_process import recover_from_ric
+import numpy as np
+from torch.utils.tensorboard import SummaryWriter
+import json
+# import clip
+from CLIP import clip
+
+import options.option_transformer as option_trans
+import models.vqvae as vqvae
+import utils.utils_model as utils_model
+import eval_trans_per as eval_trans
+from dataset import dataset_TM_eval
+import models.t2m_trans as trans
+from options.get_eval_option import get_opt
+from models.evaluator_wrapper import EvaluatorModelWrapper
+import warnings
 from tqdm import trange
+warnings.filterwarnings('ignore')
 
-def tensorborad_add_video_xyz(writer, xyz, nb_iter, tag, nb_vis=4, title_batch=None, outname=None):
-    xyz = xyz[:1]
-    bs, seq = xyz.shape[:2]
-    xyz = xyz.reshape(bs, seq, -1, 3)
-    plot_xyz = plot_3d.draw_to_batch(xyz.cpu().numpy(),title_batch, outname)
-    plot_xyz =np.transpose(plot_xyz, (0, 1, 4, 2, 3)) 
-    writer.add_video(tag, plot_xyz, nb_iter, fps = 20)
+##### ---- Exp dirs ---- #####
+os.chdir('/root/autodl-tmp/SATO')
+args = option_trans.get_args_parser()
+torch.manual_seed(args.seed)
 
-@torch.no_grad()        
-def evaluation_vqvae(out_dir, val_loader, net, logger, writer, nb_iter, best_fid, best_iter, best_div, best_top1, best_top2, best_top3, best_matching, eval_wrapper, draw = True, save = True, savegif=False, savenpy=False) : 
-    net.eval()
-    nb_sample = 0
-    
-    draw_org = []
-    draw_pred = []
-    draw_text = []
+args.out_dir = os.path.join(args.out_dir, f'{args.exp_name}')
+os.makedirs(args.out_dir, exist_ok = True)
+
+##### ---- Logger ---- #####
+logger = utils_model.get_logger(args.out_dir)
+writer = SummaryWriter(args.out_dir)
+logger.info(json.dumps(vars(args), indent=4, sort_keys=True))
+
+from utils.word_vectorizer import WordVectorizer
+w_vectorizer = WordVectorizer('./glove', 'our_vab')
+val_loader = dataset_TM_eval.DATALoader(args.dataname, True, 32, w_vectorizer)
+
+dataset_opt_path = 'checkpoints/kit/Comp_v6_KLD005/opt.txt' if args.dataname == 'kit' else 'checkpoints/t2m/Comp_v6_KLD005/opt.txt'
+
+wrapper_opt = get_opt(dataset_opt_path, torch.device('cuda'))
+eval_wrapper = EvaluatorModelWrapper(wrapper_opt)
+
+##### ---- Network ---- #####
+
+## load clip model and datasets
+
+clip_model, clip_preprocess = clip.load(args.clip_path, device=torch.device('cuda'), jit=False)  # Must set jit=False for training
+clip.model.convert_weights(clip_model)  # Actually this line is unnecessary since clip by default already on float16
+clip_model.eval()
+for p in clip_model.parameters():
+    p.requires_grad = False
+
+net = vqvae.HumanVQVAE(args, ## use args to define different parameters in different quantizers
+                       args.nb_code,
+                       args.code_dim,
+                       args.output_emb_width,
+                       args.down_t,
+                       args.stride_t,
+                       args.width,
+                       args.depth,
+                       args.dilation_growth_rate)
 
 
-    motion_annotation_list = []
-    motion_pred_list = []
+trans_encoder = trans.Text2Motion_Transformer(num_vq=args.nb_code, 
+                                embed_dim=args.embed_dim_gpt, 
+                                clip_dim=args.clip_dim, 
+                                block_size=args.block_size, 
+                                num_layers=args.num_layers, 
+                                n_head=args.n_head_gpt, 
+                                drop_out_rate=args.drop_out_rate, 
+                                fc_rate=args.ff_rate)
 
-    R_precision_real = 0
-    R_precision = 0
 
-    nb_sample = 0
-    matching_score_real = 0
-    matching_score_pred = 0
-    for batch in val_loader:
-        word_embeddings, pos_one_hots, caption, sent_len, motion, m_length, token, name = batch
+print ('loading checkpoint from {}'.format(args.resume_pth))
+ckpt = torch.load(args.resume_pth, map_location='cpu')
+net.load_state_dict(ckpt['net'], strict=True)
+net.eval()
+net.cuda()
 
-        motion = motion.cuda()
-        et, em = eval_wrapper.get_co_embeddings(word_embeddings, pos_one_hots, sent_len, motion, m_length)
-        bs, seq = motion.shape[0], motion.shape[1]
+if args.resume_trans is not None:
+    print ('loading transformer checkpoint from {}'.format(args.resume_trans))
+    ckpt = torch.load(args.resume_trans, map_location='cpu')
+    trans_encoder.load_state_dict(ckpt['trans'], strict=True)
+trans_encoder.train()
+trans_encoder.cuda()
+print('checkpoints loading successfully')
 
-        num_joints = 21 if motion.shape[-1] == 251 else 22
+fid = []
+fid_d=[]
+div = []
+top1 = []
+top2 = []
+top3 = []
+matching = []
+multi = []
+repeat_time = 20
+fid_p=[]
         
-        pred_pose_eval = torch.zeros((bs, seq, motion.shape[-1])).cuda()
-
-        for i in range(bs):
-            pose = val_loader.dataset.inv_transform(motion[i:i+1, :m_length[i], :].detach().cpu().numpy())
-            pose_xyz = recover_from_ric(torch.from_numpy(pose).float().cuda(), num_joints)
-
-
-            pred_pose, loss_commit, perplexity = net(motion[i:i+1, :m_length[i]])
-            pred_denorm = val_loader.dataset.inv_transform(pred_pose.detach().cpu().numpy())
-            pred_xyz = recover_from_ric(torch.from_numpy(pred_denorm).float().cuda(), num_joints)
-            
-            if savenpy:
-                np.save(os.path.join(out_dir, name[i]+'_gt.npy'), pose_xyz[:, :m_length[i]].cpu().numpy())
-                np.save(os.path.join(out_dir, name[i]+'_pred.npy'), pred_xyz.detach().cpu().numpy())
-
-            pred_pose_eval[i:i+1,:m_length[i],:] = pred_pose
-
-            if i < min(4, bs):
-                draw_org.append(pose_xyz)
-                draw_pred.append(pred_xyz)
-                draw_text.append(caption[i])
-
-        et_pred, em_pred = eval_wrapper.get_co_embeddings(word_embeddings, pos_one_hots, sent_len, pred_pose_eval, m_length)
-
-        motion_pred_list.append(em_pred)
-        motion_annotation_list.append(em)
-            
-        temp_R, temp_match = calculate_R_precision(et.cpu().numpy(), em.cpu().numpy(), top_k=3, sum_all=True)
-        R_precision_real += temp_R
-        matching_score_real += temp_match
-        temp_R, temp_match = calculate_R_precision(et_pred.cpu().numpy(), em_pred.cpu().numpy(), top_k=3, sum_all=True)
-        R_precision += temp_R
-        matching_score_pred += temp_match
-
-        nb_sample += bs
-
-    motion_annotation_np = torch.cat(motion_annotation_list, dim=0).cpu().numpy()
-    motion_pred_np = torch.cat(motion_pred_list, dim=0).cpu().numpy()
-    gt_mu, gt_cov  = calculate_activation_statistics(motion_annotation_np)
-    mu, cov= calculate_activation_statistics(motion_pred_np)
-
-    diversity_real = calculate_diversity(motion_annotation_np, 300 if nb_sample > 300 else 100)
-    diversity = calculate_diversity(motion_pred_np, 300 if nb_sample > 300 else 100)
-
-    R_precision_real = R_precision_real / nb_sample
-    R_precision = R_precision / nb_sample
-
-    matching_score_real = matching_score_real / nb_sample
-    matching_score_pred = matching_score_pred / nb_sample
-
-    fid = calculate_frechet_distance(gt_mu, gt_cov, mu, cov)
-
-    msg = f"--> \t Eva. Iter {nb_iter} :, FID. {fid:.4f}, Diversity Real. {diversity_real:.4f}, Diversity. {diversity:.4f}, R_precision_real. {R_precision_real}, R_precision. {R_precision}, matching_score_real. {matching_score_real}, matching_score_pred. {matching_score_pred}"
-    logger.info(msg)
-    
-    if draw:
-        writer.add_scalar('./Test/FID', fid, nb_iter)
-        writer.add_scalar('./Test/Diversity', diversity, nb_iter)
-        writer.add_scalar('./Test/top1', R_precision[0], nb_iter)
-        writer.add_scalar('./Test/top2', R_precision[1], nb_iter)
-        writer.add_scalar('./Test/top3', R_precision[2], nb_iter)
-        writer.add_scalar('./Test/matching_score', matching_score_pred, nb_iter)
-
-    
-        if nb_iter % 5000 == 0 : 
-            for ii in range(4):
-                tensorborad_add_video_xyz(writer, draw_org[ii], nb_iter, tag='./Vis/org_eval'+str(ii), nb_vis=1, title_batch=[draw_text[ii]], outname=[os.path.join(out_dir, 'gt'+str(ii)+'.gif')] if savegif else None)
-            
-        if nb_iter % 5000 == 0 : 
-            for ii in range(4):
-                tensorborad_add_video_xyz(writer, draw_pred[ii], nb_iter, tag='./Vis/pred_eval'+str(ii), nb_vis=1, title_batch=[draw_text[ii]], outname=[os.path.join(out_dir, 'pred'+str(ii)+'.gif')] if savegif else None)   
-
-    
-    if fid < best_fid : 
-        print(fid,best_fid)
-
-        msg = f"--> --> \t FID Improved from {best_fid:.5f} to {fid:.5f} !!!"
-        logger.info(msg)
-        best_fid, best_iter = fid, nb_iter
-        if save:
-            torch.save({'net' : net.state_dict()}, os.path.join(out_dir, 'net_best_fid.pth'))
-    
-    if abs(diversity_real - diversity) < abs(diversity_real - best_div) : 
-        msg = f"--> --> \t Diversity Improved from {best_div:.5f} to {diversity:.5f} !!!"
-        logger.info(msg)
-        best_div = diversity
-        if save:
-            torch.save({'net' : net.state_dict()}, os.path.join(out_dir, 'net_best_div.pth'))
-
-    if R_precision[0] > best_top1 : 
-        msg = f"--> --> \t Top1 Improved from {best_top1:.4f} to {R_precision[0]:.4f} !!!"
-        logger.info(msg)
-        best_top1 = R_precision[0]
-        if save:
-            torch.save({'net' : net.state_dict()}, os.path.join(out_dir, 'net_best_top1.pth'))
-
-    if R_precision[1] > best_top2 : 
-        msg = f"--> --> \t Top2 Improved from {best_top2:.4f} to {R_precision[1]:.4f} !!!"
-        logger.info(msg)
-        best_top2 = R_precision[1]
-    
-    if R_precision[2] > best_top3 : 
-        msg = f"--> --> \t Top3 Improved from {best_top3:.4f} to {R_precision[2]:.4f} !!!"
-        logger.info(msg)
-        best_top3 = R_precision[2]
-    
-    if matching_score_pred < best_matching : 
-        msg = f"--> --> \t matching_score Improved from {best_matching:.5f} to {matching_score_pred:.5f} !!!"
-        logger.info(msg)
-        best_matching = matching_score_pred
-        if save:
-            torch.save({'net' : net.state_dict()}, os.path.join(out_dir, 'net_best_matching.pth'))
-
-    if save:
-        torch.save({'net' : net.state_dict()}, os.path.join(out_dir, 'net_last.pth'))
-
-    net.train()
-    return best_fid, best_iter, best_div, best_top1, best_top2, best_top3, best_matching, writer, logger
-
-
-@torch.no_grad()        
-def evaluation_transformer(out_dir, val_loader, net, trans, logger, writer, nb_iter, best_fid, best_fid_p,best_fid_d,best_iter, best_div, best_top1, best_top2, best_top3, best_matching, clip_model, eval_wrapper, draw = True, save = True, savegif=False,PGD=None,crit=None) : 
-
-    trans.eval()
-    
-    nb_sample = 0
-    
-    draw_org = []
-    draw_pred = []
-    draw_text = []
-    draw_text_pred = []
-
-    motion_annotation_list = []
-    motion_pred_list = []
-    motion_pred_per_list = []
-    R_precision_real = 0
-    R_precision = 0
-    matching_score_real = 0
-    matching_score_pred = 0
-
-    nb_sample = 0
-    for i in range(1):
-        for batch in tqdm(val_loader):
-            word_embeddings, pos_one_hots, clip_text, clip_text_perb, sent_len, pose, m_length, token, name = batch
-
-            bs, seq = pose.shape[:2]
-            num_joints = 21 if pose.shape[-1] == 251 else 22
-            
-            text = clip.tokenize(clip_text, truncate=True).cuda()
-            text_perb = clip.tokenize(clip_text_perb, truncate=True).cuda()
-
-
-            feat_clip_text = clip_model.encode_text(text)[0].float()
-            feat_clip_text_per = clip_model.encode_text(text_perb)[0].float()
-
-            
-            pred_pose_eval = torch.zeros((bs, seq, pose.shape[-1])).cuda()
-            pred_pose_eval_per = torch.zeros((bs, seq, pose.shape[-1])).cuda()
-            pred_len = torch.ones(bs).long()
-            pred_len_per = torch.ones(bs).long()
-
-            for k in range(bs):
-                try:
-                    index_motion = trans.sample(feat_clip_text[k:k+1], False)
-                    index_motion_per = trans.sample(feat_clip_text_per[k:k+1], False)
-                except:
-                    # print('---------------------')
-                    index_motion = torch.ones(1,1).cuda().long()
-                    index_motion_per = torch.ones(1,1).cuda().long()
-
-                pred_pose = net.forward_decoder(index_motion)
-                pred_pose_per = net.forward_decoder(index_motion_per)
-                
-                cur_len = pred_pose.shape[1]
-                cur_len_per = pred_pose_per.shape[1]
-
-                pred_len[k] = min(cur_len, seq)
-                pred_len_per[k] = min(cur_len_per, seq)
-                pred_pose_eval[k:k+1, :cur_len] = pred_pose[:, :seq]
-                pred_pose_eval_per[k:k+1, :cur_len_per] = pred_pose_per[:, :seq]
-
-                if draw:
-                    pred_denorm = val_loader.dataset.inv_transform(pred_pose.detach().cpu().numpy())
-                    pred_xyz = recover_from_ric(torch.from_numpy(pred_denorm).float().cuda(), num_joints)
-
-                    if i == 0 and k < 4:
-                        draw_pred.append(pred_xyz)
-                        draw_text_pred.append(clip_text[k])
-
-            et_pred, em_pred = eval_wrapper.get_co_embeddings(word_embeddings, pos_one_hots, sent_len, pred_pose_eval, pred_len)
-            et_pred_per, em_pred_per = eval_wrapper.get_co_embeddings(word_embeddings, pos_one_hots, sent_len, pred_pose_eval_per, pred_len_per)
-            
-            if i == 0:
-                pose = pose.cuda().float()
-                
-                et, em = eval_wrapper.get_co_embeddings(word_embeddings, pos_one_hots, sent_len, pose, m_length)
-                motion_annotation_list.append(em)
-                motion_pred_list.append(em_pred)
-                motion_pred_per_list.append(em_pred_per)
-
-                if draw:
-                    pose = val_loader.dataset.inv_transform(pose.detach().cpu().numpy())
-                    pose_xyz = recover_from_ric(torch.from_numpy(pose).float().cuda(), num_joints)
-
-
-                    for j in range(min(4, bs)):
-                        draw_org.append(pose_xyz[j][:m_length[j]].unsqueeze(0))
-                        draw_text.append(clip_text[j])
-
-                temp_R, temp_match = calculate_R_precision(et.cpu().numpy(), em.cpu().numpy(), top_k=3, sum_all=True)
-                R_precision_real += temp_R
-                matching_score_real += temp_match
-                temp_R, temp_match = calculate_R_precision(et_pred.cpu().numpy(), em_pred.cpu().numpy(), top_k=3, sum_all=True)
-                R_precision += temp_R
-                matching_score_pred += temp_match
-
-                nb_sample += bs
-
-    motion_annotation_np = torch.cat(motion_annotation_list, dim=0).cpu().numpy()
-    motion_pred_np = torch.cat(motion_pred_list, dim=0).cpu().numpy()
-    motion_pred_per_np = torch.cat(motion_pred_per_list, dim=0).cpu().numpy()
-    gt_mu, gt_cov  = calculate_activation_statistics(motion_annotation_np)
-    mu, cov= calculate_activation_statistics(motion_pred_np)
-    mu_per, cov_per= calculate_activation_statistics(motion_pred_per_np)
-
-    diversity_real = calculate_diversity(motion_annotation_np, 300 if nb_sample > 300 else 100)
-    diversity = calculate_diversity(motion_pred_np, 300 if nb_sample > 300 else 100)
-
-    R_precision_real = R_precision_real / nb_sample
-    R_precision = R_precision / nb_sample
-
-    matching_score_real = matching_score_real / nb_sample
-    matching_score_pred = matching_score_pred / nb_sample
-
-
-    fid = calculate_frechet_distance(gt_mu, gt_cov, mu, cov)
-    fid_p = calculate_frechet_distance(gt_mu,gt_cov,mu_per,cov_per)
-    fid_d = calculate_frechet_distance(mu_per, cov_per, mu, cov)
-
-    msg = f"--> \t Eva. Iter {nb_iter} :, FID. {fid:.4f},fid_p{fid_p:.5f},FID_d.{fid_p:.5f} Diversity Real. {diversity_real:.4f}, Diversity. {diversity:.4f}, R_precision_real. {R_precision_real}, R_precision. {R_precision}, matching_score_real. {matching_score_real}, matching_score_pred. {matching_score_pred}"
-    logger.info(msg)
-    
-    
-    if draw:
-        writer.add_scalar('./Test/FID', fid, nb_iter)
-        writer.add_scalar('./Test/FID_d', fid_p, nb_iter)
-        writer.add_scalar('./Test/fid_p', fid_p, nb_iter)
-        writer.add_scalar('./Test/Diversity', diversity, nb_iter)
-        writer.add_scalar('./Test/top1', R_precision[0], nb_iter)
-        writer.add_scalar('./Test/top2', R_precision[1], nb_iter)
-        writer.add_scalar('./Test/top3', R_precision[2], nb_iter)
-        writer.add_scalar('./Test/matching_score', matching_score_pred, nb_iter)
-
-    
-        # if nb_iter % 10000 == 0 : 
-        #     for ii in range(4):
-        #         tensorborad_add_video_xyz(writer, draw_org[ii], nb_iter, tag='./Vis/org_eval'+str(ii), nb_vis=1, title_batch=[draw_text[ii]], outname=[os.path.join(out_dir, 'gt'+str(ii)+'.gif')] if savegif else None)
-            
-        # if nb_iter % 10000 == 0 : 
-        #     for ii in range(4):
-        #         tensorborad_add_video_xyz(writer, draw_pred[ii], nb_iter, tag='./Vis/pred_eval'+str(ii), nb_vis=1, title_batch=[draw_text_pred[ii]], outname=[os.path.join(out_dir, 'pred'+str(ii)+'.gif')] if savegif else None)
-
-    if isinstance(best_fid, tuple):
-        best_fid=best_fid[0]
-    if isinstance(best_fid_d, tuple):
-        best_fid_d=best_fid_d[0]
-    if fid < best_fid : 
-        msg = f"--> --> \t FID Improved from {best_fid:.5f} to {fid:.5f} !!!"
-        logger.info(msg)
-        best_fid, best_iter = fid, nb_iter
-        if save:
-            state_dict = clip_model.state_dict()
-            torch.save(state_dict, os.path.join(out_dir, 'clip_best.pth'))
-            torch.save({'trans' : trans.state_dict()}, os.path.join(out_dir, 'net_best_fid.pth'))
-            msg = f"--> --> \t Current FID is {fid:.5f} !!!"
-            logger.info(msg)
-    if fid_p < best_fid_p:
-        msg = f"--> --> \t fid_p {best_fid_p:.5f} to {fid_p:.5f} !!!"
-        logger.info(msg)
-        best_fid_p = fid_p
-
-    if fid_d < best_fid_d : 
-        msg = f"--> --> \t FID_d {best_fid_d:.5f} to {fid_d:.5f} !!!"
-        logger.info(msg)
-        best_fid_d = fid_d
-       
-    if matching_score_pred < best_matching : 
-        msg = f"--> --> \t matching_score Improved from {best_matching:.5f} to {matching_score_pred:.5f} !!!"
-        logger.info(msg)
-        best_matching = matching_score_pred
-
-    if abs(diversity_real - diversity) < abs(diversity_real - best_div) : 
-        msg = f"--> --> \t Diversity Improved from {best_div:.5f} to {diversity:.5f} !!!"
-        logger.info(msg)
-        best_div = diversity
-
-    if R_precision[0] > best_top1 : 
-        msg = f"--> --> \t Top1 Improved from {best_top1:.4f} to {R_precision[0]:.4f} !!!"
-        logger.info(msg)
-        best_top1 = R_precision[0]
-
-    if R_precision[1] > best_top2 : 
-        msg = f"--> --> \t Top2 Improved from {best_top2:.4f} to {R_precision[1]:.4f} !!!"
-        logger.info(msg)
-        best_top2 = R_precision[1]
-    
-    if R_precision[2] > best_top3 : 
-        msg = f"--> --> \t Top3 Improved from {best_top3:.4f} to {R_precision[2]:.4f} !!!"
-        logger.info(msg)
-        best_top3 = R_precision[2]
-
-    if save:
-        state_dict = clip_model.state_dict()
-        torch.save(state_dict, os.path.join(out_dir, 'clip_last.pth'))
-        torch.save({'trans' : trans.state_dict()}, os.path.join(out_dir, 'net_last.pth'))
-
-    trans.train()
-    return best_fid, best_fid_p, best_fid_p, best_iter, best_div, best_top1, best_top2, best_top3, best_matching, writer, logger
-
-
-@torch.no_grad()        
-def evaluation_transformer_test(out_dir, val_loader, net, trans, logger, writer, nb_iter, best_fid,best_fid_p,best_fid_d, best_iter, best_div, best_top1, best_top2, best_top3, best_matching, best_multi, clip_model, eval_wrapper, draw = True, save = True, savegif=False, savenpy=False) : 
-
-    trans.eval()
-    nb_sample = 0
-    
-    draw_org = []
-    draw_pred = []
-    draw_text = []
-    draw_text_pred = []
-    draw_name = []
-
-    motion_annotation_list = []
-    motion_pred_list = []
-    motion_pred_per_list = []
-
-    motion_multimodality = []
-    R_precision_real = 0
-    R_precision = 0
-    matching_score_real = 0
-    matching_score_pred = 0
-
-    nb_sample = 0
-    
-    for batch in tqdm(val_loader, desc="Validation Progress"):
-
-        word_embeddings, pos_one_hots, clip_text, clip_text_perb, sent_len, pose, m_length, token, name = batch
-        bs, seq = pose.shape[:2]
-        num_joints = 21 if pose.shape[-1] == 251 else 22
-        
-        text = clip.tokenize(clip_text, truncate=True).cuda()
-        text_perb = clip.tokenize(clip_text_perb, truncate=True).cuda()
-        feat_clip_text = clip_model.encode_text(text)[0].float()
-        feat_clip_text_per = clip_model.encode_text(text_perb)[0].float()
-        
-        
-        motion_multimodality_batch = []
-        for i in range(1):
-            pred_pose_eval = torch.zeros((bs, seq, pose.shape[-1])).cuda()
-            pred_pose_eval_per = torch.zeros((bs, seq, pose.shape[-1])).cuda()
-            
-            pred_len = torch.ones(bs).long()
-            pred_len_per = torch.ones(bs).long()
-            
-            for k in range(bs):
-                try:
-                    index_motion = trans.sample(feat_clip_text[k:k+1], True)
-                    index_motion_per = trans.sample(feat_clip_text_per[k:k+1], True)
-                except:
-                    index_motion = torch.ones(1,1).cuda().long()
-                    index_motion_per = torch.ones(1,1).cuda().long()
-
-                pred_pose = net.forward_decoder(index_motion)
-                pred_pose_per = net.forward_decoder(index_motion_per)
-                cur_len = pred_pose.shape[1]
-                cur_len_per = pred_pose_per.shape[1]
-                
-                pred_len[k] = min(cur_len, seq)
-                pred_len_per[k] = min(cur_len_per, seq)
-                
-                pred_pose_eval[k:k+1, :cur_len] = pred_pose[:, :seq]
-                pred_pose_eval_per[k:k+1, :cur_len_per] = pred_pose_per[:, :seq]
-
-                if i == 0 and (draw or savenpy):
-                    pred_denorm = val_loader.dataset.inv_transform(pred_pose.detach().cpu().numpy())
-                    pred_xyz = recover_from_ric(torch.from_numpy(pred_denorm).float().cuda(), num_joints)
-
-                    if savenpy:
-                        np.save(os.path.join(out_dir, name[k]+'_pred.npy'), pred_xyz.detach().cpu().numpy())
-
-                    if draw:
-                        if i == 0:
-                            draw_pred.append(pred_xyz)
-                            draw_text_pred.append(clip_text[k])
-                            draw_name.append(name[k])
-
-            et_pred, em_pred = eval_wrapper.get_co_embeddings(word_embeddings, pos_one_hots, sent_len, pred_pose_eval, pred_len)
-            et_pred_per, em_pred_per = eval_wrapper.get_co_embeddings(word_embeddings, pos_one_hots, sent_len, pred_pose_eval_per, pred_len_per)
-
-            # motion_multimodality_batch.append(em_pred.reshape(bs, 1, -1))
-            
-            if i == 0:
-                pose = pose.cuda().float()
-                
-                et, em = eval_wrapper.get_co_embeddings(word_embeddings, pos_one_hots, sent_len, pose, m_length)
-                motion_annotation_list.append(em)
-                motion_pred_list.append(em_pred)
-                motion_pred_per_list.append(em_pred_per)
-
-                if draw or savenpy:
-                    pose = val_loader.dataset.inv_transform(pose.detach().cpu().numpy())
-                    pose_xyz = recover_from_ric(torch.from_numpy(pose).float().cuda(), num_joints)
-
-                    if savenpy:
-                        for j in range(bs):
-                            np.save(os.path.join(out_dir, name[j]+'_gt.npy'), pose_xyz[j][:m_length[j]].unsqueeze(0).cpu().numpy())
-
-                    if draw:
-                        for j in range(bs):
-                            draw_org.append(pose_xyz[j][:m_length[j]].unsqueeze(0))
-                            draw_text.append(clip_text[j])
-
-                temp_R, temp_match = calculate_R_precision(et.cpu().numpy(), em.cpu().numpy(), top_k=3, sum_all=True)
-                R_precision_real += temp_R
-                matching_score_real += temp_match
-                temp_R, temp_match = calculate_R_precision(et_pred.cpu().numpy(), em_pred.cpu().numpy(), top_k=3, sum_all=True)
-                R_precision += temp_R
-                matching_score_pred += temp_match
-
-                nb_sample += bs
-
-        # motion_multimodality.append(torch.cat(motion_multimodality_batch, dim=1))
-
-    motion_annotation_np = torch.cat(motion_annotation_list, dim=0).cpu().numpy()
-    motion_pred_np = torch.cat(motion_pred_list, dim=0).cpu().numpy()
-    motion_pred_per_np = torch.cat(motion_pred_per_list, dim=0).cpu().numpy()
-    gt_mu, gt_cov  = calculate_activation_statistics(motion_annotation_np)
-    mu, cov= calculate_activation_statistics(motion_pred_np)                # mu cov使用的是motion_perb_np
-    mu_per, cov_per= calculate_activation_statistics(motion_pred_per_np)
-    gt_mu[np.isnan(gt_mu) | np.isinf(gt_mu)] = 0.0
-    gt_cov[np.isnan(gt_cov) | np.isinf(gt_cov)] = 0.0
-    mu[np.isnan(mu) | np.isinf(mu)] = 0.0
-    cov[np.isnan(cov) | np.isinf(cov)] = 0.0
-    mu_per[np.isnan(mu_per) | np.isinf(mu_per)] = 0.0
-    cov_per[np.isnan(cov_per) | np.isinf(cov_per)] = 0.0
-    diversity_real = calculate_diversity(motion_annotation_np, 300 if nb_sample > 300 else 100)
-    diversity = calculate_diversity(motion_pred_np, 300 if nb_sample > 300 else 100)
-
-    R_precision_real = R_precision_real / nb_sample
-    R_precision = R_precision / nb_sample
-
-    matching_score_real = matching_score_real / nb_sample
-    matching_score_pred = matching_score_pred / nb_sample
-
-    multimodality = 0
-    # motion_multimodality = torch.cat(motion_multimodality, dim=0).cpu().numpy()
-    # multimodality = calculate_multimodality(motion_multimodality, 10)
-    try:
-        fid = calculate_frechet_distance(gt_mu, gt_cov, mu, cov)
-        fid_p = calculate_frechet_distance(gt_mu,gt_cov,mu_per,cov_per)
-        fid_d = calculate_frechet_distance(mu_per, cov_per, mu, cov)
-        
-    except:
-        print('error')
-    msg = f"--> \t Eva. Iter {nb_iter} :, FID. {fid:.4f}, fid_p. {fid_p:.5f}, fid_d. {fid_d:.4f}, Diversity Real. {diversity_real:.4f}, Diversity. {diversity:.4f}, R_precision_real. {R_precision_real}, R_precision. {R_precision}, matching_score_real. {matching_score_real}, matching_score_pred. {matching_score_pred}, multimodality. {multimodality:.4f}"
-    logger.info(msg)
-    
-    
-    if draw:
-        for ii in range(len(draw_org)):
-            tensorborad_add_video_xyz(writer, draw_org[ii], nb_iter, tag='./Vis/'+draw_name[ii]+'_org', nb_vis=1, title_batch=[draw_text[ii]], outname=[os.path.join(out_dir, draw_name[ii]+'_skel_gt.gif')] if savegif else None)
-        
-            tensorborad_add_video_xyz(writer, draw_pred[ii], nb_iter, tag='./Vis/'+draw_name[ii]+'_pred', nb_vis=1, title_batch=[draw_text_pred[ii]], outname=[os.path.join(out_dir, draw_name[ii]+'_skel_pred.gif')] if savegif else None)
-
-    trans.train()
-    return fid,fid_p,fid_d, best_iter, diversity, R_precision[0], R_precision[1], R_precision[2], matching_score_pred, multimodality, writer, logger
-
-# (X - X_train)*(X - X_train) = -2X*X_train + X*X + X_train*X_train
-def euclidean_distance_matrix(matrix1, matrix2):
-    """
-        Params:
-        -- matrix1: N1 x D
-        -- matrix2: N2 x D
-        Returns:
-        -- dist: N1 x N2
-        dist[i, j] == distance(matrix1[i], matrix2[j])
-    """
-    assert matrix1.shape[1] == matrix2.shape[1]
-    d1 = -2 * np.dot(matrix1, matrix2.T)    # shape (num_test, num_train)
-    d2 = np.sum(np.square(matrix1), axis=1, keepdims=True)    # shape (num_test, 1)
-    d3 = np.sum(np.square(matrix2), axis=1)     # shape (num_train, )
-    dists = np.sqrt(d1 + d2 + d3)  # broadcasting
-    return dists
-
-
-
-def calculate_top_k(mat, top_k):
-    size = mat.shape[0]
-    gt_mat = np.expand_dims(np.arange(size), 1).repeat(size, 1)
-    bool_mat = (mat == gt_mat)
-    correct_vec = False
-    top_k_list = []
-    for i in range(top_k):
-#         print(correct_vec, bool_mat[:, i])
-        correct_vec = (correct_vec | bool_mat[:, i])
-        # print(correct_vec)
-        top_k_list.append(correct_vec[:, None])
-    top_k_mat = np.concatenate(top_k_list, axis=1)
-    return top_k_mat
-
-
-def calculate_R_precision(embedding1, embedding2, top_k, sum_all=False):
-    dist_mat = euclidean_distance_matrix(embedding1, embedding2)
-    matching_score = dist_mat.trace()
-    argmax = np.argsort(dist_mat, axis=1)
-    top_k_mat = calculate_top_k(argmax, top_k)
-    if sum_all:
-        return top_k_mat.sum(axis=0), matching_score
-    else:
-        return top_k_mat, matching_score
-
-def calculate_multimodality(activation, multimodality_times):
-    assert len(activation.shape) == 3
-    assert activation.shape[1] > multimodality_times
-    num_per_sent = activation.shape[1]
-
-    first_dices = np.random.choice(num_per_sent, multimodality_times, replace=False)
-    second_dices = np.random.choice(num_per_sent, multimodality_times, replace=False)
-    dist = linalg.norm(activation[:, first_dices] - activation[:, second_dices], axis=2)
-    return dist.mean()
-
-
-def calculate_diversity(activation, diversity_times):
-    assert len(activation.shape) == 2
-    assert activation.shape[0] > diversity_times
-    num_samples = activation.shape[0]
-
-    first_indices = np.random.choice(num_samples, diversity_times, replace=False)
-    second_indices = np.random.choice(num_samples, diversity_times, replace=False)
-    dist = linalg.norm(activation[first_indices] - activation[second_indices], axis=1)
-    return dist.mean()
-
-
-
-def calculate_frechet_distance(mu1, sigma1, mu2, sigma2, eps=1e-6):
-
-    mu1 = np.atleast_1d(mu1)
-    mu2 = np.atleast_1d(mu2)
-
-    sigma1 = np.atleast_2d(sigma1)
-    sigma2 = np.atleast_2d(sigma2)
-
-    assert mu1.shape == mu2.shape, \
-        'Training and test mean vectors have different lengths'
-    assert sigma1.shape == sigma2.shape, \
-        'Training and test covariances have different dimensions'
-
-    diff = mu1 - mu2
-
-    # Product might be almost singular
-    covmean, _ = linalg.sqrtm(sigma1.dot(sigma2), disp=False)
-    if not np.isfinite(covmean).all():
-        msg = ('fid calculation produces singular product; '
-               'adding %s to diagonal of cov estimates') % eps
-        print(msg)
-        offset = np.eye(sigma1.shape[0]) * eps
-        covmean = linalg.sqrtm((sigma1 + offset).dot(sigma2 + offset))
-
-    # Numerical error might give slight imaginary component
-    if np.iscomplexobj(covmean):
-        if not np.allclose(np.diagonal(covmean).imag, 0, atol=1e-3):
-            m = np.max(np.abs(covmean.imag))
-            raise ValueError('Imaginary component {}'.format(m))
-        covmean = covmean.real
-
-    tr_covmean = np.trace(covmean)
-
-    return (diff.dot(diff) + np.trace(sigma1)
-            + np.trace(sigma2) - 2 * tr_covmean)
-
-
-
-def calculate_activation_statistics(activations):
-
-    mu = np.mean(activations, axis=0)
-    cov = np.cov(activations, rowvar=False)
-    return mu, cov
-
-
-def calculate_frechet_feature_distance(feature_list1, feature_list2):
-    feature_list1 = np.stack(feature_list1)
-    feature_list2 = np.stack(feature_list2)
-
-    # normalize the scale
-    mean = np.mean(feature_list1, axis=0)
-    std = np.std(feature_list1, axis=0) + 1e-10
-    feature_list1 = (feature_list1 - mean) / std
-    feature_list2 = (feature_list2 - mean) / std
-
-    dist = calculate_frechet_distance(
-        mu1=np.mean(feature_list1, axis=0), 
-        sigma1=np.cov(feature_list1, rowvar=False),
-        mu2=np.mean(feature_list2, axis=0), 
-        sigma2=np.cov(feature_list2, rowvar=False),
-    )
-    return dist
+for i in range(repeat_time):
+    print('repeat_time: ',i)
+    best_fid,best_fid_p,best_fid_d, best_iter, best_div, best_top1, best_top2, best_top3, best_matching, best_multi, writer, logger = eval_trans.evaluation_transformer_test(args.out_dir, val_loader, net, trans_encoder, logger, writer, 0, best_fid=1000,best_fid_p=1000,best_fid_d=1000, best_iter=0, best_div=100, best_top1=0, best_top2=0, best_top3=0, best_matching=100, best_multi=0, clip_model=clip_model, eval_wrapper=eval_wrapper, draw=False, savegif=False, save=False, savenpy=(i==0))
+    fid.append(best_fid)
+    fid_p.append(best_fid_p)
+    fid_d.append(best_fid_d)
+    div.append(best_div)
+    top1.append(best_top1)
+    top2.append(best_top2)
+    top3.append(best_top3)
+    matching.append(best_matching)
+    multi.append(best_multi)
+
+
+print('final result:')
+print('fid: ', sum(fid)/repeat_time)
+print('fid_p',sum(fid_p)/repeat_time)
+print('fid_d',sum(fid_d)/repeat_time)
+print('div: ', sum(div)/repeat_time)
+print('top1: ', sum(top1)/repeat_time)
+print('top2: ', sum(top2)/repeat_time)
+print('top3: ', sum(top3)/repeat_time)
+print('matching: ', sum(matching)/repeat_time)
+
+
+fid = np.array(fid)
+fid_p=np.array(fid_p)
+fid_d=np.array(fid_d)
+div = np.array(div)
+top1 = np.array(top1)
+top2 = np.array(top2)
+top3 = np.array(top3)
+matching = np.array(matching)
+
+msg_final = f"FID. {np.mean(fid):.3f}, {np.std(fid)*1.96/np.sqrt(repeat_time):.3f}, fid_p.{np.mean(fid_p):.3f}, {np.std(fid_p)*1.96/np.sqrt(repeat_time):.3f},fid_d.{np.mean(fid_d):.3f}, conf. {np.std(fid)*1.96/np.sqrt(repeat_time):.3f}, Diversity. {np.mean(div):.3f}, conf. {np.std(div)*1.96/np.sqrt(repeat_time):.3f}, TOP1. {np.mean(top1):.3f}, conf. {np.std(top1)*1.96/np.sqrt(repeat_time):.3f}, TOP2. {np.mean(top2):.3f}, conf. {np.std(top2)*1.96/np.sqrt(repeat_time):.3f}, TOP3. {np.mean(top3):.3f}, conf. {np.std(top3)*1.96/np.sqrt(repeat_time):.3f}, Matching. {np.mean(matching):.3f}, conf. {np.std(matching)*1.96/np.sqrt(repeat_time):.3f}, conf. {np.std(multi)*1.96/np.sqrt(repeat_time):.3f}"
+logger.info(msg_final)
