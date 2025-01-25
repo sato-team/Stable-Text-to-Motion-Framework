@@ -212,7 +212,9 @@ Take HumanML3D for an example, the dataset structure should look like this:
 ```
 ### **Train**<a name="train"></a>
 
+```shell
 python train.py --resume-pth pretrained/vq_best.pth --clip_path pretrained/clip_best.pth
+```
 
 ### **Evaluation**<a name="eval"></a>
 
